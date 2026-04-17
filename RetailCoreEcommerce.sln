@@ -6,6 +6,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailCoreEcommerce.Service
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailCoreEcommerce.Repositories", "src\RetailCoreEcommerce.Repositories\RetailCoreEcommerce.Repositories.csproj", "{AA55D912-B691-4C49-9B3E-A69F8BC1E8D0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailCoreEcommerce.Contracts", "src\RetailCoreEcommerce.Contracts\RetailCoreEcommerce.Contracts.csproj", "{BF055B21-6B0F-4FC2-B76A-8A0388267CD5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailCoreEcommerce.Domain", "src\RetailCoreEcommerce.Domain\RetailCoreEcommerce.Domain.csproj", "{CDA2BE13-83D7-4A53-B86F-9411AD17BFAA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{AA55D912-B691-4C49-9B3E-A69F8BC1E8D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA55D912-B691-4C49-9B3E-A69F8BC1E8D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA55D912-B691-4C49-9B3E-A69F8BC1E8D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF055B21-6B0F-4FC2-B76A-8A0388267CD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF055B21-6B0F-4FC2-B76A-8A0388267CD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF055B21-6B0F-4FC2-B76A-8A0388267CD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF055B21-6B0F-4FC2-B76A-8A0388267CD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDA2BE13-83D7-4A53-B86F-9411AD17BFAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDA2BE13-83D7-4A53-B86F-9411AD17BFAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDA2BE13-83D7-4A53-B86F-9411AD17BFAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDA2BE13-83D7-4A53-B86F-9411AD17BFAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
