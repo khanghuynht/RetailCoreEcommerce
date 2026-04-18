@@ -8,7 +8,6 @@
 
     <ItemGroup>
       <Folder Include="Data\" />
-      <Folder Include="Entities\" />
       <Folder Include="Repositories\" />
       <Folder Include="UnitOfWork\" />
     </ItemGroup>
