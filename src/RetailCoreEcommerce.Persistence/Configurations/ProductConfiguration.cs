@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RetailCoreEcommerce.Domain;
+using RetailCoreEcommerce.Domain.Constants;
 
 namespace RetailCoreEcommerce.Persistence.Configurations;
 
@@ -24,5 +25,11 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .WithMany(x => x.Products)
             .HasForeignKey(x => x.CategoryId)
             .OnDelete(DeleteBehavior.Restrict);
+        
+        // Convert enum to string
+        builder.Property(x => x.Status).HasConversion(
+            p => p.ToString(),
+            p => Enum.Parse<ProductStatus>(p)
+        );
     }
 }

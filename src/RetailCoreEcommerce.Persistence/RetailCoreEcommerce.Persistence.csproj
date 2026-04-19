@@ -16,12 +16,18 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+
     </ItemGroup>
 
 
     <ItemGroup>
       <ProjectReference Include="..\RetailCoreEcommerce.Application\RetailCoreEcommerce.Application.csproj" />
       <ProjectReference Include="..\RetailCoreEcommerce.Domain\RetailCoreEcommerce.Domain.csproj" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <Folder Include="Migrations\" />
     </ItemGroup>
 
 </Project>

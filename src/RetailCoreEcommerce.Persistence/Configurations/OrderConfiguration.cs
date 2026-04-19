@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RetailCoreEcommerce.Domain;
+using RetailCoreEcommerce.Domain.Constants;
 
 namespace RetailCoreEcommerce.Persistence.Configurations;
 
@@ -26,8 +27,19 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.HasIndex(x => x.OrderCode).IsUnique();
 
         builder.HasOne(x => x.User)
-            .WithMany()
+            .WithMany(u => u.Orders!)
             .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        // Convert enum to string
+        builder.Property(x => x.Status).HasConversion(
+            p => p.ToString(),
+            p => Enum.Parse<OrderStatus>(p));
+
+        // Convert enum to string
+        builder.Property(x => x.PaymentMethod).HasConversion(
+            p => p.ToString(),
+            p => Enum.Parse<PaymentMethod>(p)
+        );
     }
 }

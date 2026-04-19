@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RetailCoreEcommerce.Domain;
+using RetailCoreEcommerce.Domain.Constants;
 
 namespace RetailCoreEcommerce.Persistence.Configurations;
 
@@ -21,5 +22,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(x => x.Ward).HasMaxLength(128);
 
         builder.HasIndex(x => x.Username).IsUnique();
+        
+        // Convert enum to string
+        builder.Property(x => x.Role).HasConversion(
+            p => p.ToString(),
+            p => Enum.Parse<UserRole>(p)
+        );
     }
 }

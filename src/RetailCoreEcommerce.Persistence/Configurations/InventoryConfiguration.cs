@@ -21,5 +21,6 @@ public class InventoryConfiguration : IEntityTypeConfiguration<Inventory>
             .HasForeignKey<Inventory>(x => x.ProductId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
+        
     }
 }

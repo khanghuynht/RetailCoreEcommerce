@@ -7,8 +7,7 @@ namespace RetailCoreEcommerce.Persistence.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddRepositories(
-        this IServiceCollection services,
+    public static void AddPersistence(this IServiceCollection services,
         IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
@@ -19,9 +18,6 @@ public static class ServiceCollectionExtensions
         }
 
         services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(
-                configuration.GetConnectionString(connectionString)));
-
-        return services;
+            options.UseSqlServer(connectionString));
     }
 }

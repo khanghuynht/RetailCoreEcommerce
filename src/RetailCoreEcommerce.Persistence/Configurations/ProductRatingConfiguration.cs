@@ -16,8 +16,14 @@ public class ProductRatingConfiguration : IEntityTypeConfiguration<ProductRating
 
 
         builder.HasOne(x => x.Product)
-            .WithMany()
+            .WithMany(p => p.ProductRatings!)
             .HasForeignKey(x => x.ProductId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(x => x.User)
+            .WithMany(u => u.ProductRatings!)
+            .HasForeignKey(x => x.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
     }
 }
