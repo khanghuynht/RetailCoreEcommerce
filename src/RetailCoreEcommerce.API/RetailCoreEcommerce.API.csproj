@@ -10,4 +10,13 @@
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.6"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Controllers\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\RetailCoreEcommerece.Infrastructure\RetailCoreEcommerece.Infrastructure.csproj" />
+      <ProjectReference Include="..\RetailCoreEcommerce.Application\RetailCoreEcommerce.Application.csproj" />
+    </ItemGroup>
+
 </Project>

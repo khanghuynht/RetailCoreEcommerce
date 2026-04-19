@@ -2,13 +2,15 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailCoreEcommerce.API", "src\RetailCoreEcommerce.API\RetailCoreEcommerce.API.csproj", "{BE4A47C3-8AE0-43F0-9AC6-6DA1D0F12950}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailCoreEcommerce.Services", "src\RetailCoreEcommerce.Services\RetailCoreEcommerce.Services.csproj", "{2E44EDF3-D803-4B20-A30B-04415CBD6B23}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailCoreEcommerce.Application", "src\RetailCoreEcommerce.Application\RetailCoreEcommerce.Application.csproj", "{2E44EDF3-D803-4B20-A30B-04415CBD6B23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailCoreEcommerce.Repositories", "src\RetailCoreEcommerce.Repositories\RetailCoreEcommerce.Repositories.csproj", "{AA55D912-B691-4C49-9B3E-A69F8BC1E8D0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailCoreEcommerce.Persistence", "src\RetailCoreEcommerce.Persistence\RetailCoreEcommerce.Persistence.csproj", "{AA55D912-B691-4C49-9B3E-A69F8BC1E8D0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailCoreEcommerce.Contracts", "src\RetailCoreEcommerce.Contracts\RetailCoreEcommerce.Contracts.csproj", "{BF055B21-6B0F-4FC2-B76A-8A0388267CD5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailCoreEcommerce.Domain", "src\RetailCoreEcommerce.Domain\RetailCoreEcommerce.Domain.csproj", "{CDA2BE13-83D7-4A53-B86F-9411AD17BFAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailCoreEcommerece.Infrastructure", "RetailCoreEcommerece.Infrastructure\RetailCoreEcommerece.Infrastructure.csproj", "{C7C17A2B-26E3-4B6E-9286-323DE747D061}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,5 +38,9 @@ Global
 		{CDA2BE13-83D7-4A53-B86F-9411AD17BFAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDA2BE13-83D7-4A53-B86F-9411AD17BFAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDA2BE13-83D7-4A53-B86F-9411AD17BFAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7C17A2B-26E3-4B6E-9286-323DE747D061}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7C17A2B-26E3-4B6E-9286-323DE747D061}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7C17A2B-26E3-4B6E-9286-323DE747D061}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7C17A2B-26E3-4B6E-9286-323DE747D061}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
