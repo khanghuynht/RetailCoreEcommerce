@@ -16,4 +16,7 @@ public class User : AuditableEntity<Guid>
     public string? Province { get; set; }
     public string? Ward { get; set; }
     public UserRole Role { get; set; }
+    
+    public virtual ICollection<Order>? Orders { get; set; } = [];
+    public virtual ICollection<ProductRating>? ProductRatings { get; set; } = [];
 }

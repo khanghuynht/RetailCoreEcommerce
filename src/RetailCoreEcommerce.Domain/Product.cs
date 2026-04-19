@@ -21,4 +21,8 @@ public class Product : AuditableEntity<Guid>
     public ProductStatus Status { get; set; } // Draft, Published
     public bool IsActive { get; set; } // Visibility in storefront
     public virtual Category Category { get; set; } = null!;
+    public virtual Inventory Inventory { get; set; } = null!;
+
+    public virtual ICollection<ProductImage>? ProductImages { get; set; } = [];
+    public virtual ICollection<ProductRating>? ProductRatings { get; set; } = [];
 }
