@@ -1,4 +1,9 @@
+using Microsoft.OpenApi;
+using RetailCoreEcommerce.API.Shared;
 using RetailCoreEcommerce.Persistence.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using RetailCoreEcommerce.Contracts.Shared;
 
 namespace RetailCoreEcommerce.API;
 
@@ -7,5 +12,108 @@ public static class Startup
     public static void Configure(this WebApplicationBuilder builder)
     {
         builder.Services.AddPersistence(builder.Configuration);
+        builder.ConfigureSwagger("PennyEcommerce", "v1");
+    }
+
+    /// <summary>
+    ///     Configures the application request pipeline
+    /// </summary>
+    public static void Configure(this WebApplication app)
+    {
+        app.UseErrorHandling();
+
+        // app.UseCorrelationId();
+        // app.UseRequestLogging();
+        
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+        }
+        else
+        {
+            app.UseHsts();
+        }
+        
+        app.UseRouting();
+        app.UseHttpsRedirection();
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+
+        app.MapControllers();
+        app.MapHealthChecks("/health");
+    }
+    
+    public static void ConfigureAuthentication(this WebApplicationBuilder builder)
+    {
+        var jwtSettings = builder.Configuration.GetSection(JwtSettings.Section).Get<JwtSettings>() ??
+            throw new Exception("JwtSettings are not configured");
+
+        // RSA (Rivest-Shamir-Adleman) is an asymmetric encryption algorithm
+        // In JWT context, we use RSA for digital signatures:
+        // - The private key (kept secret) is used to sign tokens
+        // - The public key (shared openly) is used to verify the signature
+        // This is more secure than symmetric algorithms (HMAC) because the verification
+        // public key doesn't need to be kept secret
+        // var rsa = RSA.Create();
+        
+        // Get the RSA public key directly from the service
+        
+        var rsaPublicKey = jwtSettings.PublicKeyBytes.ReadRsaKeyBase64();
+
+        builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new RsaSecurityKey(rsaPublicKey),
+                        ValidateIssuer = true,
+                        ValidIssuer = jwtSettings.Issuer,
+                        ValidateAudience = true,
+                        ValidAudience = jwtSettings.Audience,
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero,
+                        RoleClaimType = "role"
+                    };
+                }
+            );
+    }
+    public static void ConfigureSwagger(this WebApplicationBuilder builder, string serviceName, string version)
+    {
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen(opt =>
+        {
+            opt.SwaggerDoc(version, new OpenApiInfo
+            {
+                Title = $"{serviceName} Service",
+                Version = version,
+                Description = $"{serviceName} Ecommerce API documentation"
+            });
+            opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                BearerFormat = "JWT",
+                Description = "JWT Authorization header using the Bearer scheme.",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.Http,
+                Scheme = "Bearer"
+            });
+
+            opt.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+            {
+                [new OpenApiSecuritySchemeReference("bearer", document)] = []
+            });
+        });
+    }
+
+    // Extension method for startup
+    public static void UseErrorHandling(this IApplicationBuilder app)
+    {
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
     }
 }

@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using RetailCoreEcommerce.Contracts.Shared;
 using RetailCoreEcommerce.Domain.Abstractions;
 using RetailCoreEcommerce.Services.Abstractions;
 
@@ -106,7 +107,7 @@ public sealed class GenericRepository<TEntity, TKey> : IGenericRepository<TEntit
 
         return query;
     }
-    
+
 
     public async Task<int> CountAsync(Expression<Func<TEntity, bool>>? predicate = null,
         CancellationToken cancellationToken = default, params Expression<Func<TEntity, object>>[] includes)
@@ -121,6 +122,28 @@ public sealed class GenericRepository<TEntity, TKey> : IGenericRepository<TEntit
         }
 
         return await query.CountAsync(cancellationToken);
+    }
+
+
+    public async Task<PaginationResult<TEntity>> GetPagedAsync(
+        Expression<Func<TEntity, bool>>? predicate,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
+    {
+        var pageNumber = pagination.PageNumber;
+        var pageSize = pagination.PageSize;
+        IQueryable<TEntity> query = _dbSet.AsNoTracking();
+        
+        if (predicate is not null)
+            query = query.Where(predicate);
+        var totalItems = await query.CountAsync(cancellationToken);
+        
+        var items = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+        
+        return new PaginationResult<TEntity>(items, totalItems, pageNumber, pageSize);
     }
 
     public void Add(TEntity entity)

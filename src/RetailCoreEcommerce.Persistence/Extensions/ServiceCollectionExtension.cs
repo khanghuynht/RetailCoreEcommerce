@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RetailCoreEcommerce.Persistence.Data;
+using RetailCoreEcommerce.Services.Abstractions;
 
 namespace RetailCoreEcommerce.Persistence.Extensions;
 
@@ -19,5 +20,7 @@ public static class ServiceCollectionExtensions
 
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(connectionString));
+
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }

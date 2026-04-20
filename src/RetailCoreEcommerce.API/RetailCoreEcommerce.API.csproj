@@ -13,16 +13,20 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Serilog.AspNetCore" Version="8.0.3"/>
+        <PackageReference Include="Serilog.Sinks.File" Version="7.0.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.6"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\" />
+        <Folder Include="Controllers\"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\RetailCoreEcommerce.Application\RetailCoreEcommerce.Application.csproj" />
-      <ProjectReference Include="..\RetailCoreEcommerce.Persistence\RetailCoreEcommerce.Persistence.csproj" />
-      <ProjectReference Include="..\RetailCoreEcommerece.Infrastructure\RetailCoreEcommerece.Infrastructure.csproj" />
+        <ProjectReference Include="..\RetailCoreEcommerce.Application\RetailCoreEcommerce.Application.csproj"/>
+        <ProjectReference Include="..\RetailCoreEcommerce.Persistence\RetailCoreEcommerce.Persistence.csproj"/>
+        <ProjectReference Include="..\RetailCoreEcommerece.Infrastructure\RetailCoreEcommerece.Infrastructure.csproj"/>
     </ItemGroup>
 
 </Project>

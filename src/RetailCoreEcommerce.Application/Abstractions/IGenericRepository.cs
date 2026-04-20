@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using RetailCoreEcommerce.Contracts.Shared;
 using RetailCoreEcommerce.Domain.Abstractions;
 
 namespace RetailCoreEcommerce.Services.Abstractions;
@@ -61,6 +62,11 @@ public interface IGenericRepository<TEntity, in TKey> where TEntity : class, IEn
 
     Task<int> CountAsync(Expression<Func<TEntity, bool>>? predicate = null,
         CancellationToken cancellationToken = default, params Expression<Func<TEntity, object>>[] includes);
+    
+    Task<PaginationResult<TEntity>> GetPagedAsync(
+        Expression<Func<TEntity, bool>>? predicate,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
 
     void Add(TEntity entity);
     void Update(TEntity entity);
