@@ -1,4 +1,4 @@
-namespace RetailCoreEcommerce.Contracts.Shared;
+namespace RetailCoreEcommerce.Contracts.Settings;
 
 public class JwtSettings
 {

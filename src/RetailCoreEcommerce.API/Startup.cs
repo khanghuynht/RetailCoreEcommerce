@@ -3,6 +3,7 @@ using RetailCoreEcommerce.API.Shared;
 using RetailCoreEcommerce.Persistence.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using RetailCoreEcommerce.Contracts.Settings;
 using RetailCoreEcommerce.Contracts.Shared;
 
 namespace RetailCoreEcommerce.API;
@@ -12,7 +13,10 @@ public static class Startup
     public static void Configure(this WebApplicationBuilder builder)
     {
         builder.Services.AddPersistence(builder.Configuration);
+        builder.ConfigureControllers();
+        builder.ConfigureHealthChecks();
         builder.ConfigureSwagger("PennyEcommerce", "v1");
+        builder.ConfigureAuthentication();
     }
 
     /// <summary>
@@ -24,16 +28,21 @@ public static class Startup
 
         // app.UseCorrelationId();
         // app.UseRequestLogging();
-        
+
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "PennyEcommerce v1");
+                c.RoutePrefix = "swagger";
+            });
         }
         else
         {
             app.UseHsts();
         }
-        
+
         app.UseRouting();
         app.UseHttpsRedirection();
         app.UseAuthentication();
@@ -43,11 +52,12 @@ public static class Startup
         app.MapControllers();
         app.MapHealthChecks("/health");
     }
-    
+
+
     public static void ConfigureAuthentication(this WebApplicationBuilder builder)
     {
         var jwtSettings = builder.Configuration.GetSection(JwtSettings.Section).Get<JwtSettings>() ??
-            throw new Exception("JwtSettings are not configured");
+                          throw new Exception("JwtSettings are not configured");
 
         // RSA (Rivest-Shamir-Adleman) is an asymmetric encryption algorithm
         // In JWT context, we use RSA for digital signatures:
@@ -56,9 +66,9 @@ public static class Startup
         // This is more secure than symmetric algorithms (HMAC) because the verification
         // public key doesn't need to be kept secret
         // var rsa = RSA.Create();
-        
+
         // Get the RSA public key directly from the service
-        
+
         var rsaPublicKey = jwtSettings.PublicKeyBytes.ReadRsaKeyBase64();
 
         builder.Services.AddAuthentication(options =>
@@ -82,7 +92,9 @@ public static class Startup
                     };
                 }
             );
+        builder.Services.AddAuthorization();
     }
+
     public static void ConfigureSwagger(this WebApplicationBuilder builder, string serviceName, string version)
     {
         builder.Services.AddEndpointsApiExplorer();
@@ -111,7 +123,16 @@ public static class Startup
         });
     }
 
-    // Extension method for startup
+    public static void ConfigureHealthChecks(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddHealthChecks();
+    }
+
+    public static void ConfigureControllers(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddControllers();
+    }
+
     public static void UseErrorHandling(this IApplicationBuilder app)
     {
         app.UseMiddleware<ExceptionHandlingMiddleware>();
