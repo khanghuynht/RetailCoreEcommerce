@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Microsoft.OpenApi;
 using RetailCoreEcommerce.API.Shared;
 using RetailCoreEcommerce.Persistence.Extensions;
@@ -15,6 +16,7 @@ public static class Startup
         builder.Services.AddPersistence(builder.Configuration);
         builder.ConfigureControllers();
         builder.ConfigureHealthChecks();
+        builder.ConfigureApiVersioning();
         builder.ConfigureSwagger("PennyEcommerce", "v1");
         builder.ConfigureAuthentication();
     }
@@ -120,6 +122,36 @@ public static class Startup
             {
                 [new OpenApiSecuritySchemeReference("bearer", document)] = []
             });
+        });
+    }
+
+    public static void ConfigureApiVersioning(this WebApplicationBuilder builder)
+    {
+        // Read API versioning settings from configuration
+        var settings = builder.Configuration
+            .GetSection(ApiVersioningSettings.Section)
+            .Get<ApiVersioningSettings>() ?? new ApiVersioningSettings();
+
+        // Configure API versioning based on settings
+        builder.Services.AddApiVersioning(options =>
+        {
+            options.DefaultApiVersion = new ApiVersion(settings.DefaultMajor, settings.DefaultMinor);
+            options.AssumeDefaultVersionWhenUnspecified = settings.AssumeDefaultWhenUnspecified;
+
+            // Report API versions in response headers if enabled in settings
+            options.ReportApiVersions = settings.ReportApiVersions;
+
+            // Configure how the API version is read from incoming requests based on settings
+            options.ApiVersionReader = settings.Reader switch
+            {
+                "Header" => new HeaderApiVersionReader("x-api-version"),
+                "Query" => new QueryStringApiVersionReader("api-version"),
+                _ => new UrlSegmentApiVersionReader()
+            };
+        }).AddApiExplorer(options =>
+        {
+            options.GroupNameFormat = "'v'VVV"; // v1, v1.0, v2
+            options.SubstituteApiVersionInUrl = true; // replace {version} in routes
         });
     }
 
