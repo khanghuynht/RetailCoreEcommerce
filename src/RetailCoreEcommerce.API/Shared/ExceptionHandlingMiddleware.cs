@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Text.Json;
 using Microsoft.IdentityModel.Tokens;
@@ -50,14 +49,5 @@ public class ExceptionHandlingMiddleware
         context.Response.StatusCode = (int)statusCode;
 
         await context.Response.WriteAsync(JsonSerializer.Serialize(errorResponse));
-    }
-}
-
-// Extension method for startup
-public static class ExceptionHandlingMiddlewareExtensions
-{
-    public static void UseErrorHandling(this IApplicationBuilder app)
-    {
-        app.UseMiddleware<ExceptionHandlingMiddleware>();
     }
 }
