@@ -1,7 +1,7 @@
-using RetailCoreEcommerce.Domain;
 using RetailCoreEcommerce.Domain.Abstractions;
+using RetailCoreEcommerce.Services.Abstractions;
 
-namespace RetailCoreEcommerce.Services.Abstractions;
+namespace RetailCoreEcommerce.Application.Abstractions;
 
 public interface IUnitOfWork : IDisposable
 {

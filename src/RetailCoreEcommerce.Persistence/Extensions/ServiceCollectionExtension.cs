@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RetailCoreEcommerce.Application.Abstractions;
 using RetailCoreEcommerce.Persistence.Data;
 using RetailCoreEcommerce.Services.Abstractions;
 

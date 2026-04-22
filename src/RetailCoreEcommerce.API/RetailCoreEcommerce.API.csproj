@@ -20,10 +20,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Controllers\"/>
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\RetailCoreEcommerce.Application\RetailCoreEcommerce.Application.csproj"/>
         <ProjectReference Include="..\RetailCoreEcommerce.Persistence\RetailCoreEcommerce.Persistence.csproj"/>
         <ProjectReference Include="..\RetailCoreEcommerece.Infrastructure\RetailCoreEcommerece.Infrastructure.csproj"/>

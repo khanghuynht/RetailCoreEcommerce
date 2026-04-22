@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using RetailCoreEcommerce.Domain;
+using RetailCoreEcommerce.Application.Abstractions;
 using RetailCoreEcommerce.Domain.Abstractions;
 using RetailCoreEcommerce.Persistence.Data;
 using RetailCoreEcommerce.Services.Abstractions;
