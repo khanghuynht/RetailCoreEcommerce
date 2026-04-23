@@ -4,6 +4,7 @@ using RetailCoreEcommerce.API.Shared;
 using RetailCoreEcommerce.Persistence.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using RetailCoreEcommerce.API.Extensions;
 using RetailCoreEcommerce.Contracts.Settings;
 using RetailCoreEcommerce.Contracts.Shared;
 
@@ -14,6 +15,7 @@ public static class Startup
     public static void Configure(this WebApplicationBuilder builder)
     {
         builder.Services.AddPersistence(builder.Configuration);
+        builder.Services.AddApplication();
         builder.ConfigureControllers();
         builder.ConfigureHealthChecks();
         builder.ConfigureApiVersioning();
@@ -27,10 +29,7 @@ public static class Startup
     public static void Configure(this WebApplication app)
     {
         app.UseErrorHandling();
-
-        // app.UseCorrelationId();
-        // app.UseRequestLogging();
-
+        
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();

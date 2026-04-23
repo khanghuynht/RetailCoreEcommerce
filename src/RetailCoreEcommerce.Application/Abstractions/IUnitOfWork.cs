@@ -1,5 +1,4 @@
 using RetailCoreEcommerce.Domain.Abstractions;
-using RetailCoreEcommerce.Services.Abstractions;
 
 namespace RetailCoreEcommerce.Application.Abstractions;
 

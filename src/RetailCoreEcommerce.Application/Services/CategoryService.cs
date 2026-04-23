@@ -40,7 +40,7 @@ public class CategoryService : ICategoryService
                         $"Parent category with ID {request.ParentId} not found"));
                 }
 
-                if (parent.ParentId != Guid.Empty)
+                if (parent.ParentId is not null)
                 {
                     return Result.Failure(new Error(
                         "Category.MaxDepthExceeded",
@@ -226,8 +226,7 @@ public class CategoryService : ICategoryService
                 tracking: false,
                 cancellationToken: cancellationToken,
                 x => x.Parent!,
-                x => x.Children,
-                x => x.Products);
+                x => x.Children);
 
             if (category is null)
             {
@@ -244,8 +243,8 @@ public class CategoryService : ICategoryService
                 ParentId = category.ParentId,
                 ParentName = category.Parent?.Name,
                 ChildrenCount = category.Children.Count,
-                ProductsCount = category.Products.Count
             };
+            
             return Result.Success(response);
         }
         catch (Exception ex)
@@ -256,7 +255,7 @@ public class CategoryService : ICategoryService
         }
     }
 
-    public async Task<Result<PaginationResult<GetCategoryResponse>>> GetAllCategoriesAsync(
+    public async Task<Result<PaginationResult<GetAllCategoryResponse>>> GetAllCategoriesAsync(
         GetAllCategoriesRequest request,
         CancellationToken cancellationToken = default)
     {
@@ -269,29 +268,29 @@ public class CategoryService : ICategoryService
                     (request.Name == null || x.Name.Contains(request.Name)) &&
                     (request.ParentId == null || x.ParentId == request.ParentId) &&
                     (request.IsRootOnly == null || !request.IsRootOnly.Value || x.ParentId == null),
+                orderBy: q => q.OrderBy(x => x.CreatedAt),
                 pagination: request, // PaginationParams is the base
                 cancellationToken: cancellationToken);
 
-            var responses = pagedResult.Items.Select(category => new GetCategoryResponse
+            var responses = pagedResult.Items.Select(category => new GetAllCategoryResponse
             {
                 Id = category.Id,
                 Name = category.Name,
                 Description = category.Description,
                 ParentId = category.ParentId,
-                ParentName = null // avoid N+1; use separate query if needed
             });
 
-            var result = new PaginationResult<GetCategoryResponse>(
+            var result = new PaginationResult<GetAllCategoryResponse>(
                 responses,
                 pagedResult.TotalItems,
                 pagedResult.PageNumber,
                 pagedResult.PageSize);
-            
+
             return Result.Success(result);
         }
         catch (Exception ex)
         {
-            return Result.Failure<PaginationResult<GetCategoryResponse>>(new Error(
+            return Result.Failure<PaginationResult<GetAllCategoryResponse>>(new Error(
                 "CategoryService.GetAllCategoriesAsync",
                 $"Error retrieving categories: {ex.Message}"));
         }

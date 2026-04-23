@@ -12,4 +12,8 @@
       <ProjectReference Include="..\RetailCoreEcommerce.Domain\RetailCoreEcommerce.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Extensions\" />
+    </ItemGroup>
+
 </Project>

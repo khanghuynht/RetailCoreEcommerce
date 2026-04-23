@@ -1,8 +1,8 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using RetailCoreEcommerce.Application.Abstractions;
 using RetailCoreEcommerce.Contracts.Shared;
 using RetailCoreEcommerce.Domain.Abstractions;
-using RetailCoreEcommerce.Services.Abstractions;
 
 namespace RetailCoreEcommerce.Persistence;
 
@@ -128,22 +128,26 @@ public sealed class GenericRepository<TEntity, TKey> : IGenericRepository<TEntit
     public async Task<PaginationResult<TEntity>> GetPagedAsync(
         Expression<Func<TEntity, bool>>? predicate,
         PaginationParams pagination,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         CancellationToken cancellationToken = default)
     {
-        var pageNumber = pagination.PageNumber;
-        var pageSize = pagination.PageSize;
         IQueryable<TEntity> query = _dbSet.AsNoTracking();
-        
+
         if (predicate is not null)
             query = query.Where(predicate);
+
         var totalItems = await query.CountAsync(cancellationToken);
-        
+
+        query = orderBy is not null
+            ? orderBy(query)
+            : query.OrderBy(x => x.Id); // fallback stable order
+
         var items = await query
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
+            .Skip((pagination.PageNumber - 1) * pagination.PageSize)
+            .Take(pagination.PageSize)
             .ToListAsync(cancellationToken);
-        
-        return new PaginationResult<TEntity>(items, totalItems, pageNumber, pageSize);
+
+        return new PaginationResult<TEntity>(items, totalItems, pagination.PageNumber, pagination.PageSize);
     }
 
     public void Add(TEntity entity)

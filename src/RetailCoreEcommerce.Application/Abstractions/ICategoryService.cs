@@ -11,6 +11,6 @@ public interface ICategoryService
     Task<Result> DeleteCategoryAsync(Guid id, CancellationToken cancellationToken = default);
     Task<Result<GetCategoryResponse>> GetCategoryByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
-    Task<Result<PaginationResult<GetCategoryResponse>>> GetAllCategoriesAsync(GetAllCategoriesRequest request,
+    Task<Result<PaginationResult<GetAllCategoryResponse>>> GetAllCategoriesAsync(GetAllCategoriesRequest request,
         CancellationToken cancellationToken = default);
 }
