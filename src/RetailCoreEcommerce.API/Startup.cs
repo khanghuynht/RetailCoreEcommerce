@@ -14,7 +14,8 @@ public static class Startup
 {
     public static void Configure(this WebApplicationBuilder builder)
     {
-        builder.Services.ConfigureDatabaseConnection(builder.Configuration);
+        builder.Services.AddInfrastructure(builder.Configuration);
+        builder.Services.AddPersistence(builder.Configuration);
         builder.Services.AddApplication();
         builder.ConfigureControllers();
         builder.ConfigureHealthChecks();
