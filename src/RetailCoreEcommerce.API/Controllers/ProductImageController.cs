@@ -23,7 +23,7 @@ public class ProductImageController : BaseApiController
         IFormFile file,
         CancellationToken cancellationToken)
     {
-        var fileRequest = new FileUploadRequest(
+       await using var fileRequest = new FileUploadRequest(
             file.OpenReadStream(),
             file.FileName,
             file.ContentType,
@@ -40,7 +40,7 @@ public class ProductImageController : BaseApiController
         IFormFile file,
         CancellationToken cancellationToken)
     {
-        var fileRequest = new FileUploadRequest(
+        await using var fileRequest = new FileUploadRequest(
             file.OpenReadStream(),
             file.FileName,
             file.ContentType,
