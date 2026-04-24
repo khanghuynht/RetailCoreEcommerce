@@ -1,6 +1,6 @@
 namespace RetailCoreEcommerce.Contracts.Settings;
 
-public class JwtSettings
+public sealed class JwtSettings
 {
     public static readonly string Section = "JwtSettings";
     public string PrivateKeyBytes { get; set; } = null!;

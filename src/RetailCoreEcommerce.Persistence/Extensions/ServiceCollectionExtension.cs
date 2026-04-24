@@ -8,7 +8,7 @@ namespace RetailCoreEcommerce.Persistence.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static void AddPersistence(this IServiceCollection services,
+    public static void ConfigureDatabaseConnection(this IServiceCollection services,
         IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");

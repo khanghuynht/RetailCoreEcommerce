@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailCoreEcommerce.Contrac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailCoreEcommerce.Domain", "src\RetailCoreEcommerce.Domain\RetailCoreEcommerce.Domain.csproj", "{CDA2BE13-83D7-4A53-B86F-9411AD17BFAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailCoreEcommerece.Infrastructure", "src\RetailCoreEcommerece.Infrastructure\RetailCoreEcommerece.Infrastructure.csproj", "{C7C17A2B-26E3-4B6E-9286-323DE747D061}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailCoreEcommerce.Infrastructure", "src\RetailCoreEcommerce.Infrastructure\RetailCoreEcommerce.Infrastructure.csproj", "{C7C17A2B-26E3-4B6E-9286-323DE747D061}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,12 +1,25 @@
 using RetailCoreEcommerce.Application.Abstractions;
 using RetailCoreEcommerce.Application.Services;
+using RetailCoreEcommerce.Infrastructure.Extensions;
+using RetailCoreEcommerce.Persistence.Extensions;
 
 namespace RetailCoreEcommerce.API.Extensions;
 
 public static class ServiceCollectionExtensions
 {
+    public static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.ConfigureDatabaseConnection(configuration);
+    }
+
     public static void AddApplication(this IServiceCollection services)
     {
         services.AddScoped<ICategoryService, CategoryService>();
+    }
+
+    public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.ConfigureCloudinary(configuration);
+        
     }
 }

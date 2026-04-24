@@ -1,6 +1,6 @@
 namespace RetailCoreEcommerce.Contracts.Settings;
 
-public class ApiVersioningSettings
+public sealed class ApiVersioningSettings
 {
     public const string Section = "ApiVersioning";
     public int DefaultMajor { get; set; } = 1;
