@@ -9,11 +9,11 @@ namespace RetailCoreEcommerce.Infrastructure.Cloudinary;
 
 public class CloudinaryImageStorage : IImageStorage
 {
-    private readonly CloudinaryDotNet.Cloudinary _cloudinary;
+    private readonly ICloudinary _cloudinary;
     private readonly string _folder;
 
     public CloudinaryImageStorage(
-        CloudinaryDotNet.Cloudinary cloudinary,
+        ICloudinary cloudinary,
         IOptions<CloudinarySettings> options)
     {
         _cloudinary = cloudinary;

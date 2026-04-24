@@ -22,7 +22,7 @@ public static class ServiceCollectionExtensions
         
         // Register one Cloudinary client for the whole app (Singleton)
         // This is the "object creation" part that belongs in composition root
-        services.AddSingleton(sp =>
+        services.AddSingleton<ICloudinary>(sp =>
         {
             var s = sp.GetRequiredService<IOptions<CloudinarySettings>>().Value;
             return new CloudinaryDotNet.Cloudinary(new Account(s.CloudName, s.ApiKey, s.ApiSecret))
