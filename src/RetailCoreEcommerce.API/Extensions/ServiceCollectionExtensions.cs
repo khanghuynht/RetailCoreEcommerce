@@ -15,11 +15,12 @@ public static class ServiceCollectionExtensions
     public static void AddApplication(this IServiceCollection services)
     {
         services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<IProductImageService, ProductImageService>();
     }
 
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.ConfigureCloudinary(configuration);
-        
     }
 }

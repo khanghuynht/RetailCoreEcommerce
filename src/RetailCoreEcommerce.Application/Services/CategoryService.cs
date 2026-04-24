@@ -255,7 +255,7 @@ public class CategoryService : ICategoryService
         }
     }
 
-    public async Task<Result<PaginationResult<GetAllCategoryResponse>>> GetAllCategoriesAsync(
+    public async Task<Result<PaginationResult<GetPagedCategoryResponse>>> GetPagedCategoriesAsync(
         GetAllCategoriesRequest request,
         CancellationToken cancellationToken = default)
     {
@@ -272,7 +272,7 @@ public class CategoryService : ICategoryService
                 pagination: request, // PaginationParams is the base
                 cancellationToken: cancellationToken);
 
-            var responses = pagedResult.Items.Select(category => new GetAllCategoryResponse
+            var responses = pagedResult.Items.Select(category => new GetPagedCategoryResponse
             {
                 Id = category.Id,
                 Name = category.Name,
@@ -280,7 +280,7 @@ public class CategoryService : ICategoryService
                 ParentId = category.ParentId,
             });
 
-            var result = new PaginationResult<GetAllCategoryResponse>(
+            var result = new PaginationResult<GetPagedCategoryResponse>(
                 responses,
                 pagedResult.TotalItems,
                 pagedResult.PageNumber,
@@ -290,7 +290,7 @@ public class CategoryService : ICategoryService
         }
         catch (Exception ex)
         {
-            return Result.Failure<PaginationResult<GetAllCategoryResponse>>(new Error(
+            return Result.Failure<PaginationResult<GetPagedCategoryResponse>>(new Error(
                 "CategoryService.GetAllCategoriesAsync",
                 $"Error retrieving categories: {ex.Message}"));
         }

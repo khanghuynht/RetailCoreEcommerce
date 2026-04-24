@@ -39,7 +39,7 @@ public class CategoryController : BaseApiController
         [FromQuery] GetAllCategoriesRequest request,
         CancellationToken cancellationToken)
     {
-        var result = await _categoryService.GetAllCategoriesAsync(request, cancellationToken);
+        var result = await _categoryService.GetPagedCategoriesAsync(request, cancellationToken);
         return FromResult(result);
     }
 

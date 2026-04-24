@@ -12,5 +12,8 @@ public class ProductImageConfiguration : IEntityTypeConfiguration<ProductImage>
 
         builder.Property(x => x.Name).HasMaxLength(256);
         builder.Property(x => x.ImageUrl).IsRequired().HasMaxLength(2048);
+
+        // Store Cloudinary public id for deletion
+        builder.Property(x => x.PublicId).IsRequired().HasMaxLength(512);
     }
 }

@@ -13,8 +13,13 @@ public static class ServiceCollectionExtensions
     public static void ConfigureCloudinary(this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.Configure<CloudinarySettings>(_ => configuration.GetSection(CloudinarySettings.Section));
-
+        services.AddOptions<CloudinarySettings>()
+            .Bind(configuration.GetSection(CloudinarySettings.Section))
+            .Validate(s => !string.IsNullOrWhiteSpace(s.CloudName), "Cloudinary:CloudName is required")
+            .Validate(s => !string.IsNullOrWhiteSpace(s.ApiKey), "Cloudinary:ApiKey is required")
+            .Validate(s => !string.IsNullOrWhiteSpace(s.ApiSecret), "Cloudinary:ApiSecret is required")
+            .ValidateOnStart();
+        
         // Register one Cloudinary client for the whole app (Singleton)
         // This is the "object creation" part that belongs in composition root
         services.AddSingleton(sp =>
