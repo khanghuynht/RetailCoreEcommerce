@@ -160,12 +160,15 @@ public class ProductService : IProductService
         try
         {
             var productRepo = _unitOfWork.GetRepository<Product, Guid>();
+
             var product = await productRepo.FindFirstAsync(
                 x => x.Id == id,
                 tracking: false,
                 cancellationToken: cancellationToken,
                 x => x.Category,
-                x => x.Inventory);
+                x => x.Inventory,
+                x => x.ProductImages!);
+
             if (product is null)
                 return Result.Failure<GetProductResponse>(new Error("Product.NotFound",
                     $"Product with ID {id} not found."));
@@ -187,7 +190,17 @@ public class ProductService : IProductService
                 Height = product.Height,
                 Status = product.Status.ToString(),
                 IsActive = product.IsActive,
-                StockQuantity = product.Inventory?.StockQuantity ?? 0
+                StockQuantity = product.Inventory?.StockQuantity ?? 0,
+                Images = product.ProductImages?
+                    .OrderBy(x => x.Position)
+                    .Select(x => new ProductImageResponse
+                    {
+                        Id = x.Id,
+                        ImageUrl = x.ImageUrl,
+                        Name = x.Name,
+                        Position = x.Position
+                    })
+                    .ToList() ?? []
             };
 
             return Result.Success(response);
@@ -206,7 +219,7 @@ public class ProductService : IProductService
         try
         {
             var productRepo = _unitOfWork.GetRepository<Product, Guid>();
-            
+
             var pagedResult = await productRepo.GetPagedAsync(
                 predicate: x =>
                     (request.Name == null || x.Name.Contains(request.Name)) &&
@@ -216,7 +229,7 @@ public class ProductService : IProductService
                 orderBy: q => q.OrderBy(x => x.CreatedAt),
                 pagination: request,
                 cancellationToken: cancellationToken);
-            
+
             var responses = pagedResult.Items.Select(p => new GetAllProductResponse
             {
                 Id = p.Id,
@@ -229,7 +242,7 @@ public class ProductService : IProductService
                 IsActive = p.IsActive,
                 CategoryId = p.CategoryId
             });
-            
+
             return Result.Success(new PaginationResult<GetAllProductResponse>(
                 responses,
                 pagedResult.TotalItems,

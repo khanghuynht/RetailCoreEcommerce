@@ -16,23 +16,6 @@ public class ProductImageController : BaseApiController
         _productImageService = productImageService;
     }
 
-    // PUT because thumbnail is always replaced (not added)
-    [HttpPut("{id:guid}/thumbnail")]
-    public async Task<IActionResult> UploadThumbnail(
-        Guid id,
-        IFormFile file,
-        CancellationToken cancellationToken)
-    {
-       await using var fileRequest = new FileUploadRequest(
-            file.OpenReadStream(),
-            file.FileName,
-            file.ContentType,
-            file.Length);
-
-        var result = await _productImageService.UploadThumbnailAsync(id, fileRequest, cancellationToken);
-        return FromResult(result);
-    }
-
     // POST because it adds a new image to gallery
     [HttpPost("{id:guid}/images")]
     public async Task<IActionResult> AddProductImage(
@@ -72,4 +55,6 @@ public class ProductImageController : BaseApiController
 
         return FromResult(result);
     }
+    
+    
 }

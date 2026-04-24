@@ -2,6 +2,7 @@ using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using RetailCoreEcommerce.Application.Abstractions;
 using RetailCoreEcommerce.Contracts.Models.Product;
+using RetailCoreEcommerce.Contracts.Shared;
 
 namespace RetailCoreEcommerce.API.Controllers;
 
@@ -63,4 +64,22 @@ public class ProductController : BaseApiController
         var result = await _productService.DeleteProductAsync(id, cancellationToken);
         return FromResult(result);
     }
+    
+    [HttpPost("{id:guid}/thumbnail")]
+    public async Task<IActionResult> UploadThumbnail(
+        Guid id,
+        IFormFile file,
+        [FromServices] IProductImageService productImageService,
+        CancellationToken cancellationToken)
+    {
+        await using var fileRequest = new FileUploadRequest(
+            file.OpenReadStream(),
+            file.FileName,
+            file.ContentType,
+            file.Length);
+
+        var result = await productImageService.UploadThumbnailAsync(id, fileRequest, cancellationToken);
+        return FromResult(result);
+    }
+    
 }

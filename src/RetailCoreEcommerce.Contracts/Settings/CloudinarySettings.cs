@@ -2,7 +2,7 @@ namespace RetailCoreEcommerce.Contracts.Settings;
 
 public sealed class CloudinarySettings
 {
-    public const string Section = "Cloudinary";
+    public const string Section = "CloudinarySettings";
     public string CloudName { get; set; } = null!;
     public string ApiKey { get; set; } = null!;
     public string ApiSecret { get; set; } = null!;

@@ -18,4 +18,7 @@ public class GetProductResponse
     public string Status { get; set; } = null!;
     public bool IsActive { get; set; }
     public int StockQuantity { get; set; }
+
+    // Gallery images ordered by position
+    public List<ProductImageResponse> Images { get; set; } = [];
 }

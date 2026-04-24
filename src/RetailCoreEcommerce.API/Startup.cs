@@ -1,7 +1,6 @@
 using Asp.Versioning;
 using Microsoft.OpenApi;
 using RetailCoreEcommerce.API.Shared;
-using RetailCoreEcommerce.Persistence.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using RetailCoreEcommerce.API.Extensions;
