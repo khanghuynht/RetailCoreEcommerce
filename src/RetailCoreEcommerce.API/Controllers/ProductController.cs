@@ -65,6 +65,7 @@ public class ProductController : BaseApiController
         return FromResult(result);
     }
     
+    // POST because it adds a new image to gallery 
     [HttpPost("{id:guid}/thumbnail")]
     public async Task<IActionResult> UploadThumbnail(
         Guid id,
