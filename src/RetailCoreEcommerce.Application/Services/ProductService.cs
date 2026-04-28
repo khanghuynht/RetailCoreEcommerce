@@ -1,5 +1,6 @@
 using RetailCoreEcommerce.Application.Abstractions;
 using RetailCoreEcommerce.Contracts.Models.Product;
+using RetailCoreEcommerce.Contracts.Models.ProductImage;
 using RetailCoreEcommerce.Contracts.Shared;
 using RetailCoreEcommerce.Domain;
 using RetailCoreEcommerce.Domain.Constants;

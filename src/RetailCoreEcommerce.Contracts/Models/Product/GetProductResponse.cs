@@ -1,3 +1,5 @@
+using RetailCoreEcommerce.Contracts.Models.ProductImage;
+
 namespace RetailCoreEcommerce.Contracts.Models.Product;
 
 public class GetProductResponse

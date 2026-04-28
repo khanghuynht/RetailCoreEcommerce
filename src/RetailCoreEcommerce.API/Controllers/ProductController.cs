@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using RetailCoreEcommerce.Application.Abstractions;
+using RetailCoreEcommerce.Contracts.Models.Inventory;
 using RetailCoreEcommerce.Contracts.Models.Product;
 using RetailCoreEcommerce.Contracts.Shared;
 
@@ -64,7 +65,7 @@ public class ProductController : BaseApiController
         var result = await _productService.DeleteProductAsync(id, cancellationToken);
         return FromResult(result);
     }
-    
+
     // POST because it adds a new image to gallery 
     [HttpPost("{id:guid}/thumbnail")]
     public async Task<IActionResult> UploadThumbnail(
@@ -82,5 +83,16 @@ public class ProductController : BaseApiController
         var result = await productImageService.UploadThumbnailAsync(id, fileRequest, cancellationToken);
         return FromResult(result);
     }
-    
+
+    [HttpPatch("{id:guid}/inventory")]
+    public async Task<IActionResult> UpdateInventoryQuantity(
+        Guid id,
+        [FromBody] UpdateInventoryQuantityRequest request,
+        [FromServices] IInventoryService inventoryService,
+        CancellationToken cancellationToken)
+    {
+        request.ProductId = id;
+        var result = await inventoryService.UpdateInventoryQuantityAsync(request, cancellationToken);
+        return FromResult(result);
+    }
 }

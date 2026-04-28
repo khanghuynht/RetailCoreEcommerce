@@ -1,4 +1,4 @@
-namespace RetailCoreEcommerce.Contracts.Models.Product;
+namespace RetailCoreEcommerce.Contracts.Models.ProductImage;
 
 public sealed class ProductImageResponse
 {
