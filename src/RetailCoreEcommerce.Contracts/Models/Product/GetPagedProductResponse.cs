@@ -8,7 +8,6 @@ public class GetAllProductResponse
     public decimal OriginalPrice { get; set; }
     public decimal? SalePrice { get; set; }
     public string? ThumbnailUrl { get; set; }
-    public string Status { get; set; } = null!;
     public bool IsActive { get; set; }
     public Guid CategoryId { get; set; }
 }

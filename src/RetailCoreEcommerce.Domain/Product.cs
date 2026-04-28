@@ -18,7 +18,6 @@ public class Product : AuditableEntity<Guid>
     public int Length { get; set; } // in cm
     public int Width { get; set; } // in cm
     public int Height { get; set; } // in cm
-    public ProductStatus Status { get; set; } // Draft, Published
     public bool IsActive { get; set; } // Visibility in storefront
     public virtual Category Category { get; set; } = null!;
     public virtual Inventory Inventory { get; set; } = null!;

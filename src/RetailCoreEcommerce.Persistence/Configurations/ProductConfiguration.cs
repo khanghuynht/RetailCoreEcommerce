@@ -26,10 +26,5 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasForeignKey(x => x.CategoryId)
             .OnDelete(DeleteBehavior.Restrict);
         
-        // Convert enum to string
-        builder.Property(x => x.Status).HasConversion(
-            p => p.ToString(),
-            p => Enum.Parse<ProductStatus>(p)
-        );
     }
 }

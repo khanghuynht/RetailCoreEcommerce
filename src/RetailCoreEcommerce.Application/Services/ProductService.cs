@@ -54,7 +54,6 @@ public class ProductService : IProductService
                 Length = request.Length,
                 Width = request.Width,
                 Height = request.Height,
-                Status = ProductStatus.Draft,
                 IsActive = false,
                 Inventory = new Inventory
                 {
@@ -189,7 +188,6 @@ public class ProductService : IProductService
                 Length = product.Length,
                 Width = product.Width,
                 Height = product.Height,
-                Status = product.Status.ToString(),
                 IsActive = product.IsActive,
                 StockQuantity = product.Inventory?.StockQuantity ?? 0,
                 Images = product.ProductImages?
@@ -225,7 +223,6 @@ public class ProductService : IProductService
                 predicate: x =>
                     (request.Name == null || x.Name.Contains(request.Name)) &&
                     (request.CategoryId == null || x.CategoryId == request.CategoryId) &&
-                    (request.Status == null || (int)x.Status == (int)request.Status) &&
                     (request.IsActive == null || x.IsActive == request.IsActive),
                 orderBy: q => q.OrderBy(x => x.CreatedAt),
                 pagination: request,
@@ -239,7 +236,6 @@ public class ProductService : IProductService
                 OriginalPrice = p.OriginalPrice,
                 SalePrice = p.SalePrice,
                 ThumbnailUrl = p.ThumbnailUrl,
-                Status = p.Status.ToString(),
                 IsActive = p.IsActive,
                 CategoryId = p.CategoryId
             });

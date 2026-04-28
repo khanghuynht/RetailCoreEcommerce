@@ -19,7 +19,7 @@ public static class Startup
         builder.ConfigureControllers();
         builder.ConfigureHealthChecks();
         builder.ConfigureApiVersioning();
-        builder.ConfigureSwagger("PennyEcommerce", "v1");
+        builder.ConfigureSwagger("RetailCoreEcommerce", "v1");
         builder.ConfigureAuthentication();
     }
 
@@ -35,7 +35,7 @@ public static class Startup
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "PennyEcommerce v1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "RetailCoreEcommerce v1");
                 c.RoutePrefix = "swagger";
             });
         }
