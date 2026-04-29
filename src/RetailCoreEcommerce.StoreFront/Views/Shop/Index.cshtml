@@ -1,0 +1,190 @@
+@model ShopViewModel
+@{
+    ViewData["Title"] = "Shop";
+    var selectedCatName = Model.SelectedCategoryId.HasValue
+        ? Model.Categories.FirstOrDefault(c => c.Id == Model.SelectedCategoryId)?.Name
+        : null;
+}
+
+<div class="container py-5">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item active">Shop
+                @if (!string.IsNullOrEmpty(selectedCatName))
+                {
+                    <span class="text-muted"> / @selectedCatName</span>
+                }
+            </li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+
+        <!-- ── Sidebar ───────────────────────────────────── -->
+        <div class="col-lg-3 shop-sidebar">
+
+            <!-- Search -->
+            <div class="sidebar-card">
+                <p class="sidebar-title"><i class="bi bi-search me-2"></i>Search</p>
+                <form asp-controller="Shop" asp-action="Index" method="get">
+                    @if (Model.SelectedCategoryId.HasValue)
+                    {
+                        <input type="hidden" name="categoryId" value="@Model.SelectedCategoryId" />
+                    }
+                    <div class="input-group input-group-sm">
+                        <input class="form-control"
+                               type="search"
+                               name="name"
+                               value="@Model.SearchName"
+                               placeholder="Product name…" />
+                        <button class="btn btn-dark btn-sm" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 2-level category tree -->
+            @if (Model.Categories.Count > 0)
+            {
+                var sideRoots = Model.Categories.Where(c => c.ParentId == null).ToList();
+                var sideSubMap = Model.Categories
+                    .Where(c => c.ParentId != null)
+                    .GroupBy(c => c.ParentId!.Value)
+                    .ToDictionary(g => g.Key, g => g.ToList());
+
+                <div class="sidebar-card">
+                    <p class="sidebar-title"><i class="bi bi-grid me-2"></i>Categories</p>
+                    <a asp-controller="Shop"
+                       asp-action="Index"
+                       asp-route-name="@Model.SearchName"
+                       class="cat-link @(Model.SelectedCategoryId == null ? "active" : "")">
+                        <i class="bi bi-collection me-2"></i> All Categories
+                    </a>
+                    @foreach (var parent in sideRoots)
+                    {
+                        var subs = sideSubMap.GetValueOrDefault(parent.Id);
+                        <a asp-controller="Shop"
+                           asp-action="Index"
+                           asp-route-categoryId="@parent.Id"
+                           asp-route-name="@Model.SearchName"
+                           class="cat-link fw-semibold @(Model.SelectedCategoryId == parent.Id ? "active" : "")">
+                            <i class="bi bi-folder me-2 small"></i>@parent.Name
+                        </a>
+                        @if (subs is { Count: > 0 })
+                        {
+                            @foreach (var sub in subs)
+                            {
+                                <a asp-controller="Shop"
+                                   asp-action="Index"
+                                   asp-route-categoryId="@sub.Id"
+                                   asp-route-name="@Model.SearchName"
+                                   class="cat-link ps-4 @(Model.SelectedCategoryId == sub.Id ? "active" : "")">
+                                    <i class="bi bi-chevron-right me-1 small opacity-50"></i>@sub.Name
+                                </a>
+                            }
+                        }
+                    }
+                </div>
+            }
+        </div>
+
+        <!-- ── Product grid ──────────────────────────────── -->
+        <div class="col-lg-9">
+
+            <!-- Results header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h4 class="mb-0 fw-bold">
+                        @(string.IsNullOrEmpty(selectedCatName) ? "All Products" : selectedCatName)
+                    </h4>
+                    @if (Model.Products != null)
+                    {
+                        <small class="text-muted">@Model.Products.TotalItems result(s)</small>
+                    }
+                </div>
+                @if (!string.IsNullOrEmpty(Model.SearchName))
+                {
+                    <span class="badge bg-secondary">
+                        "<i>@Model.SearchName</i>"
+                        <a asp-controller="Shop"
+                           asp-action="Index"
+                           asp-route-categoryId="@Model.SelectedCategoryId"
+                           class="text-white ms-1">
+                            <i class="bi bi-x-lg"></i>
+                        </a>
+                    </span>
+                }
+            </div>
+
+            @if (Model.Products?.Items?.Any() == true)
+            {
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-4">
+                    @foreach (var product in Model.Products.Items)
+                    {
+                        <div class="col">
+                            @await Html.PartialAsync("_ProductCard", product)
+                        </div>
+                    }
+                </div>
+
+                <!-- Pagination -->
+                @if (Model.Products.TotalPages > 1)
+                {
+                    <nav class="mt-5 d-flex justify-content-center" aria-label="Product pages">
+                        <ul class="pagination">
+
+                            <li class="page-item @(!Model.Products.HasPreviousPage ? "disabled" : "")">
+                                <a class="page-link"
+                                   asp-controller="Shop" asp-action="Index"
+                                   asp-route-page="@(Model.CurrentPage - 1)"
+                                   asp-route-name="@Model.SearchName"
+                                   asp-route-categoryId="@Model.SelectedCategoryId">
+                                    <i class="bi bi-chevron-left"></i>
+                                </a>
+                            </li>
+
+                            @for (var p = 1; p <= Model.Products.TotalPages; p++)
+                            {
+                                <li class="page-item @(p == Model.CurrentPage ? "active" : "")">
+                                    <a class="page-link"
+                                       asp-controller="Shop" asp-action="Index"
+                                       asp-route-page="@p"
+                                       asp-route-name="@Model.SearchName"
+                                       asp-route-categoryId="@Model.SelectedCategoryId">
+                                        @p
+                                    </a>
+                                </li>
+                            }
+
+                            <li class="page-item @(!Model.Products.HasNextPage ? "disabled" : "")">
+                                <a class="page-link"
+                                   asp-controller="Shop" asp-action="Index"
+                                   asp-route-page="@(Model.CurrentPage + 1)"
+                                   asp-route-name="@Model.SearchName"
+                                   asp-route-categoryId="@Model.SelectedCategoryId">
+                                    <i class="bi bi-chevron-right"></i>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </nav>
+                }
+            }
+            else
+            {
+                <div class="text-center text-muted py-5">
+                    <i class="bi bi-search fs-1 d-block mb-3"></i>
+                    <h5>No products found</h5>
+                    <p>Try a different search term or browse another category.</p>
+                    <a asp-controller="Shop" asp-action="Index" class="btn btn-outline-secondary mt-2">
+                        Clear filters
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

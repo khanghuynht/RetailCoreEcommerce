@@ -1,0 +1,43 @@
+@model GetAllProductResponse
+
+<div class="product-card">
+    <a asp-controller="Shop" asp-action="Detail" asp-route-id="@Model.Id" class="text-decoration-none text-reset">
+        <div class="card-img-wrap">
+            @if (!string.IsNullOrEmpty(Model.ThumbnailUrl))
+            {
+                <img src="@Model.ThumbnailUrl" alt="@Model.Title" loading="lazy" />
+            }
+            else
+            {
+                <div class="d-flex align-items-center justify-content-center h-100 text-muted">
+                    <i class="bi bi-image fs-1"></i>
+                </div>
+            }
+        </div>
+    </a>
+
+    <div class="card-body">
+        <a asp-controller="Shop" asp-action="Detail" asp-route-id="@Model.Id" class="text-decoration-none text-reset">
+            <p class="card-title">@Model.Title</p>
+        </a>
+
+        <div class="mb-2">
+            @if (Model.SalePrice.HasValue && Model.SalePrice < Model.OriginalPrice)
+            {
+                <span class="price-original me-1">@Model.OriginalPrice.ToString("C") ₫</span>
+                <span class="price-sale">@Model.SalePrice.Value.ToString("C") $</span>
+            }
+            else
+            {
+                <span class="price-regular">@Model.OriginalPrice.ToString("C") $</span>
+            }
+        </div>
+
+        <a asp-controller="Shop"
+           asp-action="Detail"
+           asp-route-id="@Model.Id"
+           class="btn btn-view">
+            View Details
+        </a>
+    </div>
+</div>

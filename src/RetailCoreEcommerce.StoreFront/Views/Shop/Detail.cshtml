@@ -1,0 +1,152 @@
+@model ProductDetailViewModel
+@{
+    ViewData["Title"] = Model.Product.Title;
+    var p = Model.Product;
+    var displayPrice = p.SalePrice.HasValue && p.SalePrice < p.OriginalPrice
+        ? p.SalePrice.Value
+        : p.OriginalPrice;
+    var hasDiscount = p.SalePrice.HasValue && p.SalePrice < p.OriginalPrice;
+    var discountPct = hasDiscount
+        ? (int)Math.Round((1 - p.SalePrice!.Value / p.OriginalPrice) * 100)
+        : 0;
+}
+
+<div class="container py-5">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item">
+                <a asp-controller="Shop"
+                   asp-action="Index"
+                   asp-route-categoryId="@p.CategoryId">
+                    @(p.CategoryName ?? "Shop")
+                </a>
+            </li>
+            <li class="breadcrumb-item active">@p.Title</li>
+        </ol>
+    </nav>
+
+    <div class="row g-5">
+
+        <!-- ── Thumbnail ────────────────────────────────── -->
+        <div class="col-md-5">
+            @if (!string.IsNullOrEmpty(p.ThumbnailUrl))
+            {
+                <img src="@p.ThumbnailUrl"
+                     alt="@p.Title"
+                     class="detail-thumbnail shadow-sm" />
+            }
+            else
+            {
+                <div class="detail-thumbnail bg-light d-flex align-items-center justify-content-center shadow-sm"
+                     style="height:380px; border-radius:12px;">
+                    <i class="bi bi-image text-muted" style="font-size:5rem;"></i>
+                </div>
+            }
+
+            <!-- Gallery thumbnails -->
+            @if (p.Images?.Count > 0)
+            {
+                <div class="d-flex gap-2 mt-3 flex-wrap">
+                    @foreach (var img in p.Images)
+                    {
+                        <img src="@img.ImageUrl"
+                             alt="@img.Name"
+                             class="rounded border"
+                             style="width:72px; height:72px; object-fit:cover; cursor:pointer;"
+                             onclick="document.querySelector('.detail-thumbnail').src='@img.ImageUrl'" />
+                    }
+                </div>
+            }
+        </div>
+
+        <!-- ── Product info ──────────────────────────────── -->
+        <div class="col-md-7">
+
+            <!-- Category -->
+            @if (!string.IsNullOrEmpty(p.CategoryName))
+            {
+                <a asp-controller="Shop"
+                   asp-action="Index"
+                   asp-route-categoryId="@p.CategoryId"
+                   class="badge text-decoration-none mb-2"
+                   style="background:var(--light-bg); color:var(--accent); font-size:.8rem;">
+                    @p.CategoryName
+                </a>
+            }
+
+            <h1 class="fw-bold mb-1" style="font-size:1.8rem;">@p.Title</h1>
+            <p class="text-muted mb-3">@p.Name</p>
+
+            <!-- Price -->
+            <div class="mb-3">
+                <span class="detail-price">@displayPrice.ToString("C") $</span>
+                @if (hasDiscount)
+                {
+                    <span class="ms-2 text-muted text-decoration-line-through fs-5">
+                        @p.OriginalPrice.ToString("C") $
+                    </span>
+                    <span class="ms-2 badge bg-danger">-@discountPct%</span>
+                }
+            </div>
+
+            <!-- Stock -->
+            <div class="mb-4">
+                @if (p.StockQuantity > 0)
+                {
+                    <span class="badge-in-stock">
+                        <i class="bi bi-check-circle me-1"></i>In Stock (@p.StockQuantity available)
+                    </span>
+                }
+                else
+                {
+                    <span class="badge-out-of-stock">
+                        <i class="bi bi-x-circle me-1"></i>Out of Stock
+                    </span>
+                }
+            </div>
+
+            <!-- Description -->
+            @if (!string.IsNullOrWhiteSpace(p.Description))
+            {
+                <p class="text-muted mb-4" style="line-height:1.7;">@p.Description</p>
+            }
+
+            <hr />
+
+            <!-- Specifications -->
+            <h6 class="fw-bold mb-3">Specifications</h6>
+            <table class="table table-sm detail-specs table-borderless">
+                <tbody>
+                    <tr>
+                        <td>SKU</td>
+                        <td>@p.SKU</td>
+                    </tr>
+                    <tr>
+                        <td>Category</td>
+                        <td>@(p.CategoryName ?? "—")</td>
+                    </tr>
+                    @if (p.Length > 0 || p.Width > 0 || p.Height > 0)
+                    {
+                        <tr>
+                            <td>Dimensions</td>
+                            <td>@p.Length × @p.Width × @p.Height cm</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <hr />
+
+            <div class="d-flex gap-3 mt-4">
+                <a asp-controller="Shop" asp-action="Index"
+                   asp-route-categoryId="@p.CategoryId"
+                   class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-1"></i> Back to Shop
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

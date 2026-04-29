@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailCoreEcommerce.Domain"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailCoreEcommerce.Infrastructure", "src\RetailCoreEcommerce.Infrastructure\RetailCoreEcommerce.Infrastructure.csproj", "{C7C17A2B-26E3-4B6E-9286-323DE747D061}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailCoreEcommerce.StoreFront", "src\RetailCoreEcommerce.StoreFront\RetailCoreEcommerce.StoreFront.csproj", "{1EF7DE2E-5F0C-4871-8A20-C112574BC0E9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,7 @@ Global
 		{C7C17A2B-26E3-4B6E-9286-323DE747D061}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7C17A2B-26E3-4B6E-9286-323DE747D061}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7C17A2B-26E3-4B6E-9286-323DE747D061}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EF7DE2E-5F0C-4871-8A20-C112574BC0E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EF7DE2E-5F0C-4871-8A20-C112574BC0E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal
