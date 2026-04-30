@@ -21,6 +21,7 @@ public static class Startup
         builder.ConfigureApiVersioning();
         builder.ConfigureSwagger("RetailCoreEcommerce", "v1");
         builder.ConfigureAuthentication();
+        builder.ConfigureCors();
     }
 
     /// <summary>
@@ -45,6 +46,7 @@ public static class Startup
         }
 
         app.UseRouting();
+        app.UseCors("AllowAll");        
         app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseAuthorization();
@@ -167,5 +169,29 @@ public static class Startup
     public static void UseErrorHandling(this IApplicationBuilder app)
     {
         app.UseMiddleware<ExceptionHandlingMiddleware>();
+    }
+    
+    /// <summary>
+    ///     Configures CORS policies
+    /// </summary>
+    private static void ConfigureCors(this WebApplicationBuilder builder)
+    {
+        // Configure CORS
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll", x =>
+            {
+                x.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
+            // TODO: Add production policy for specific domain
+            // options.AddPolicy("Production", x =>
+            // {
+            //     x.WithOrigins("https://example.com")
+            //         .AllowAnyMethod()
+            //         .AllowAnyHeader();
+            // });
+        });
     }
 }

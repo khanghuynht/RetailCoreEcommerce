@@ -18,6 +18,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IProductImageService, ProductImageService>();
         services.AddScoped<IInventoryService, InventoryService>();
+        services.AddScoped<IUserService, UserService>();
     }
 
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
