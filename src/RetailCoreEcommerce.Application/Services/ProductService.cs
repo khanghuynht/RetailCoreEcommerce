@@ -190,6 +190,8 @@ public class ProductService : IProductService
                 Height = product.Height,
                 IsActive = product.IsActive,
                 StockQuantity = product.Inventory?.StockQuantity ?? 0,
+                ReservedQuantity = product.Inventory?.ReservedQuantity ?? 0,
+                SoldQuantity = product.Inventory?.SoldQuantity ?? 0,
                 Images = product.ProductImages?
                     .OrderBy(x => x.Position)
                     .Select(x => new ProductImageResponse
