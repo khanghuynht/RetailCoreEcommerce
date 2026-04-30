@@ -50,9 +50,7 @@ public class ProductApiService : IProductApiService
 
         if (request.IsActive.HasValue)
             parts.Add($"IsActive={request.IsActive.Value}");
-
-        if (request.Status.HasValue)
-            parts.Add($"Status={(int)request.Status.Value}");
+        
 
         return "?" + string.Join("&", parts);
     }
