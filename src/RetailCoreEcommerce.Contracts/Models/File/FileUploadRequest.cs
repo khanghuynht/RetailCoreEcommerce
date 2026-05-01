@@ -1,4 +1,4 @@
-namespace RetailCoreEcommerce.Contracts.Shared;
+namespace RetailCoreEcommerce.Contracts.Models.File;
 
 public sealed record FileUploadRequest(
     Stream Content,

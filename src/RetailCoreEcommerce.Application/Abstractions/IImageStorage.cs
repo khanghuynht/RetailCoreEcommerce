@@ -1,4 +1,4 @@
-using RetailCoreEcommerce.Contracts.Shared;
+using RetailCoreEcommerce.Contracts.Models.File;
 
 namespace RetailCoreEcommerce.Application.Abstractions;
 

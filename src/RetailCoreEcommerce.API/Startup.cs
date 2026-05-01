@@ -61,6 +61,13 @@ public static class Startup
     {
         var jwtSettings = builder.Configuration.GetSection(JwtSettings.Section).Get<JwtSettings>() ??
                           throw new Exception("JwtSettings are not configured");
+        
+        builder.Services.AddOptions<JwtSettings>()
+            .Bind(builder.Configuration.GetSection(JwtSettings.Section))
+            .Validate(s => !string.IsNullOrWhiteSpace(s.Issuer), "JwtSettings:Issuer is required")
+            .Validate(s => !string.IsNullOrWhiteSpace(s.Audience), "JwtSettings:Audience is required")
+            .Validate(s => !string.IsNullOrWhiteSpace(s.PublicKeyBytes), "JwtSettings:PublicKeyBytes is required")
+            .ValidateOnStart();
 
         // RSA (Rivest-Shamir-Adleman) is an asymmetric encryption algorithm
         // In JWT context, we use RSA for digital signatures:

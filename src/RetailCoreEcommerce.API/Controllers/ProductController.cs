@@ -1,9 +1,9 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using RetailCoreEcommerce.Application.Abstractions;
+using RetailCoreEcommerce.Contracts.Models.File;
 using RetailCoreEcommerce.Contracts.Models.Inventory;
 using RetailCoreEcommerce.Contracts.Models.Product;
-using RetailCoreEcommerce.Contracts.Shared;
 
 namespace RetailCoreEcommerce.API.Controllers;
 

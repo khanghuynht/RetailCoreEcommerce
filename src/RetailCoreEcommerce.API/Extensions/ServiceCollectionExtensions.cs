@@ -19,10 +19,14 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IProductImageService, ProductImageService>();
         services.AddScoped<IInventoryService, InventoryService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IAuthService, AuthService>();
     }
 
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.ConfigureCloudinary(configuration);
+        services.ConfigureJwtSecurityToken();
+        services.ConfigureBCryptPasswordHasher();
+        services.ConfigureRedisCache(configuration);
     }
 }
