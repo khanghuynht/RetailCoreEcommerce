@@ -3,7 +3,7 @@ using CloudinaryDotNet.Actions;
 using Microsoft.Extensions.Options;
 using RetailCoreEcommerce.Application.Abstractions;
 using RetailCoreEcommerce.Contracts.Settings;
-using ImageUploadResult = RetailCoreEcommerce.Contracts.Shared.ImageUploadResult;
+using ImageUploadResult = RetailCoreEcommerce.Contracts.Models.File.ImageUploadResult;
 
 namespace RetailCoreEcommerce.Infrastructure.Cloudinary;
 
