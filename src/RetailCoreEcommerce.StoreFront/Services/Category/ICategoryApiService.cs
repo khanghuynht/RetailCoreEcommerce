@@ -2,7 +2,7 @@ using RetailCoreEcommerce.Contracts.Models.Category;
 using RetailCoreEcommerce.Contracts.Shared;
 using RetailCoreEcommerce.StoreFront.Models;
 
-namespace RetailCoreEcommerce.StoreFront.Services;
+namespace RetailCoreEcommerce.StoreFront.Services.Category;
 
 public interface ICategoryApiService
 {

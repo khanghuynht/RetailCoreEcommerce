@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using RetailCoreEcommerce.Contracts.Models.Product;
 using RetailCoreEcommerce.StoreFront.Models;
 using RetailCoreEcommerce.StoreFront.Services;
+using RetailCoreEcommerce.StoreFront.Services.Category;
+using RetailCoreEcommerce.StoreFront.Services.Product;
 
 namespace RetailCoreEcommerce.StoreFront.Controllers;
 

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using RetailCoreEcommerce.Contracts.Models.Category;
 using RetailCoreEcommerce.StoreFront.Models;
 using RetailCoreEcommerce.StoreFront.Services;
+using RetailCoreEcommerce.StoreFront.Services.Category;
 
 namespace RetailCoreEcommerce.StoreFront.Controllers;
 
@@ -24,7 +25,8 @@ public abstract class BaseController : Controller
     }
 
     /// <summary>
-    /// Loads top-level categories into ViewBag so _Layout can render the nav menu.
+    /// Loads top-level categories into ViewBag so _Layout can render the nav menu,
+    /// and exposes the current user's auth state for the navbar.
     /// </summary>
     protected async Task PopulateNavCategoriesAsync(CancellationToken ct = default)
     {
@@ -34,5 +36,9 @@ public abstract class BaseController : Controller
         }, ct);
 
         ViewBag.NavCategories = result.Data?.Items?.ToList() ?? [];
+
+        // Expose auth state — reads from the HTTP-only cookie key set by CookieTokenStorageService
+        ViewBag.IsAuthenticated = !string.IsNullOrEmpty(Request.Cookies["rc_access"]);
+        ViewBag.UserFullName = Request.Cookies["rc_user"];
     }
 }

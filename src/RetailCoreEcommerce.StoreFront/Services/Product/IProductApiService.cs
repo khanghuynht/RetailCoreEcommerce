@@ -2,7 +2,7 @@ using RetailCoreEcommerce.Contracts.Models.Product;
 using RetailCoreEcommerce.Contracts.Shared;
 using RetailCoreEcommerce.StoreFront.Models;
 
-namespace RetailCoreEcommerce.StoreFront.Services;
+namespace RetailCoreEcommerce.StoreFront.Services.Product;
 
 public interface IProductApiService
 {
