@@ -1,6 +1,8 @@
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RetailCoreEcommerce.Application.Abstractions;
+using RetailCoreEcommerce.Contracts.Constants;
 using RetailCoreEcommerce.Contracts.Models.Category;
 
 namespace RetailCoreEcommerce.API.Controllers;
@@ -17,6 +19,7 @@ public class CategoryController : BaseApiController
     }
 
     [HttpPost]
+    [Authorize(Roles = nameof(UserRole.Admin))]
     public async Task<IActionResult> CreateCategory(
         [FromBody] CreateCategoryRequest request,
         CancellationToken cancellationToken)
@@ -44,6 +47,7 @@ public class CategoryController : BaseApiController
     }
 
     [HttpPatch("{id:guid}")]
+    [Authorize(Roles = nameof(UserRole.Admin))]
     public async Task<IActionResult> PatchCategory(
         Guid id,
         [FromBody] UpdateCategoryRequest request,
@@ -57,6 +61,7 @@ public class CategoryController : BaseApiController
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = nameof(UserRole.Admin))]
     public async Task<IActionResult> DeleteCategory(
         Guid id,
         CancellationToken cancellationToken)

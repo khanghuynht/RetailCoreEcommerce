@@ -42,4 +42,14 @@ public class AuthController : BaseApiController
         var result = await _authService.LogoutAsync(request, cancellationToken);
         return FromResult(result);
     }
+
+
+    [HttpPost("register")]
+    public async Task<IActionResult> Register(
+        [FromBody] RegisterRequest request,
+        CancellationToken cancellationToken)
+    {
+        var result = await _authService.RegisterAsync(request, cancellationToken);
+        return FromResult(result);
+    }
 }

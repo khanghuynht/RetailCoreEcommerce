@@ -1,6 +1,8 @@
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RetailCoreEcommerce.Application.Abstractions;
+using RetailCoreEcommerce.Contracts.Constants;
 using RetailCoreEcommerce.Contracts.Models.File;
 using RetailCoreEcommerce.Contracts.Shared;
 
@@ -19,6 +21,7 @@ public class ProductImageController : BaseApiController
 
     // POST because it adds a new image to gallery
     [HttpPost("{id:guid}/images")]
+    [Authorize(Roles = nameof(UserRole.Admin))]
     public async Task<IActionResult> AddProductImage(
         Guid id,
         IFormFile file,
@@ -36,6 +39,7 @@ public class ProductImageController : BaseApiController
 
     // DELETE a specific image from gallery by imageId
     [HttpDelete("{id:guid}/images/{imageId:guid}")]
+    [Authorize(Roles = nameof(UserRole.Admin))]
     public async Task<IActionResult> DeleteProductImage(
         Guid imageId,
         CancellationToken cancellationToken)
@@ -46,6 +50,7 @@ public class ProductImageController : BaseApiController
 
     // PATCH to reorder images by providing ordered list of image ids
     [HttpPatch("{id:guid}/images/reorder")]
+    [Authorize(Roles = nameof(UserRole.Admin))]
     public async Task<IActionResult> ReorderProductImages(
         Guid id,
         [FromBody] List<Guid> orderedImageIds,
@@ -56,6 +61,5 @@ public class ProductImageController : BaseApiController
 
         return FromResult(result);
     }
-    
     
 }

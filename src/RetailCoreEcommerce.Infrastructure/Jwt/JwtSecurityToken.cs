@@ -92,7 +92,7 @@ public class JwtSecurityToken : ITokenSecurity
             return null;
         }
     }
-    
+
     public string GenerateRefreshToken()
     {
         var randomNumber = new byte[64];
@@ -100,7 +100,7 @@ public class JwtSecurityToken : ITokenSecurity
         rng.GetBytes(randomNumber);
         return Convert.ToBase64String(randomNumber);
     }
-    
+
     public TimeSpan GetRefreshTokenExpiry()
         => TimeSpan.FromMinutes(_jwtSettings.RefreshTokenExpirationMinutes);
 

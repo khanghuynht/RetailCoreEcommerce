@@ -2,6 +2,7 @@ using RetailCoreEcommerce.Application.Abstractions;
 using RetailCoreEcommerce.Contracts.Models.Auth;
 using RetailCoreEcommerce.Contracts.Shared;
 using RetailCoreEcommerce.Domain;
+using RetailCoreEcommerce.Domain.Constants;
 
 namespace RetailCoreEcommerce.Application.Services;
 
@@ -11,7 +12,6 @@ public class AuthService : IAuthService
     private readonly IDataCache _dataCache;
     private readonly ITokenSecurity _tokenSecurity;
     private readonly IPasswordHashed _passwordHashed;
-
 
     public AuthService(IUnitOfWork unitOfWork, IDataCache dataCache, IPasswordHashed passwordHashed,
         ITokenSecurity tokenSecurity)
@@ -134,6 +134,40 @@ public class AuthService : IAuthService
         catch (Exception ex)
         {
             return Result.Failure(new Error("Auth.Logout", $"An error occurred: {ex.Message}"));
+        }
+    }
+
+    public async Task<Result> RegisterAsync(RegisterRequest request, CancellationToken ct)
+    {
+        try
+        {
+            var repo = _unitOfWork.GetRepository<User, Guid>();
+            
+            var existingUser = await repo.AnyAsync(
+                u => u.Email == request.Email || u.Username == request.Username,
+                cancellationToken: ct);
+            
+            if (existingUser)
+                return Result.Failure(new Error("AuthService.RegisterAsync", "Email or username is already taken."));
+            
+            var user = new User
+            {
+                Email = request.Email,
+                Username = request.Username,
+                PasswordHash = _passwordHashed.HashPassword(request.Password),
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                PhoneNumber = request.PhoneNumber,
+                Role = UserRole.Customer
+            };
+            
+            repo.Add(user);
+            await _unitOfWork.SaveChangesAsync();
+            return Result.Success();
+        }
+        catch (Exception ex)
+        {
+            return Result.Failure(new Error("AuthService.RegisterAsync", ex.Message));
         }
     }
 }

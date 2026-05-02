@@ -1,6 +1,8 @@
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RetailCoreEcommerce.Application.Abstractions;
+using RetailCoreEcommerce.Contracts.Constants;
 using RetailCoreEcommerce.Contracts.Models.File;
 using RetailCoreEcommerce.Contracts.Models.Inventory;
 using RetailCoreEcommerce.Contracts.Models.Product;
@@ -19,6 +21,7 @@ public class ProductController : BaseApiController
     }
 
     [HttpPost]
+    [Authorize(Roles = nameof(UserRole.Admin))]
     public async Task<IActionResult> CreateProduct(
         [FromBody] CreateProductRequest request,
         CancellationToken cancellationToken)
@@ -46,6 +49,7 @@ public class ProductController : BaseApiController
     }
 
     [HttpPatch("{id:guid}")]
+    [Authorize(Roles = nameof(UserRole.Admin))]
     public async Task<IActionResult> UpdateProduct(
         Guid id,
         [FromBody] UpdateProductRequest request,
@@ -58,6 +62,7 @@ public class ProductController : BaseApiController
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = nameof(UserRole.Admin))]
     public async Task<IActionResult> DeleteProduct(
         Guid id,
         CancellationToken cancellationToken)
@@ -68,6 +73,7 @@ public class ProductController : BaseApiController
 
     // POST because it adds a new image to gallery 
     [HttpPost("{id:guid}/thumbnail")]
+    [Authorize(Roles = nameof(UserRole.Admin))]
     public async Task<IActionResult> UploadThumbnail(
         Guid id,
         IFormFile file,
@@ -85,6 +91,7 @@ public class ProductController : BaseApiController
     }
 
     [HttpPatch("{id:guid}/inventory")]
+    [Authorize(Roles = nameof(UserRole.Admin))]
     public async Task<IActionResult> UpdateInventoryQuantity(
         Guid id,
         [FromBody] UpdateInventoryQuantityRequest request,

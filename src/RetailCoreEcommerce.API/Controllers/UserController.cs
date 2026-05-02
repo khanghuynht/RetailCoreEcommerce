@@ -1,6 +1,8 @@
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RetailCoreEcommerce.Application.Abstractions;
+using RetailCoreEcommerce.Contracts.Constants;
 using RetailCoreEcommerce.Contracts.Models.User;
 
 namespace RetailCoreEcommerce.API.Controllers;
@@ -17,6 +19,7 @@ public class UserController : BaseApiController
     }
 
     [HttpGet("customers")]
+    [Authorize(Roles = nameof(UserRole.Admin))]
     public async Task<IActionResult> GetCustomers(
         [FromQuery] GetPagedUserRequest request,
         CancellationToken cancellationToken)
