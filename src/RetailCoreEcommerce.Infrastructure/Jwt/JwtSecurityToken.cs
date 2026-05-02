@@ -132,6 +132,6 @@ public class JwtSecurityToken : ITokenSecurity
             ValidateAudience = true,
             ValidAudience = _jwtSettings.Audience,
             ValidateLifetime = validateLifetime,
-            ClockSkew = TimeSpan.Zero,
+            ClockSkew = TimeSpan.Zero
         };
 }

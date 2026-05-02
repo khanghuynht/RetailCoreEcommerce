@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Asp.Versioning;
 using Microsoft.OpenApi;
 using RetailCoreEcommerce.API.Shared;
@@ -98,7 +99,7 @@ public static class Startup
                         ValidAudience = jwtSettings.Audience,
                         ValidateLifetime = true,
                         ClockSkew = TimeSpan.Zero,
-                        RoleClaimType = "role"
+                        RoleClaimType = ClaimTypes.Role
                     };
                 }
             );
@@ -128,7 +129,7 @@ public static class Startup
 
             opt.AddSecurityRequirement(document => new OpenApiSecurityRequirement
             {
-                [new OpenApiSecuritySchemeReference("bearer", document)] = []
+                [new OpenApiSecuritySchemeReference("Bearer", document)] = []
             });
         });
     }
