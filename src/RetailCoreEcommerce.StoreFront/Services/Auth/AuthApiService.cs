@@ -35,6 +35,8 @@ public class AuthApiService(HttpClient httpClient) : IAuthApiService
     private static async Task<ApiResponse<T>> DeserializeAsync<T>(HttpResponseMessage response, CancellationToken ct)
     {
         var json = await response.Content.ReadAsStringAsync(ct);
+        if (string.IsNullOrWhiteSpace(json))
+            return new ApiResponse<T> { IsSuccess = response.IsSuccessStatusCode };
         return JsonSerializer.Deserialize<ApiResponse<T>>(json, JsonOptions) ?? new ApiResponse<T>();
     }
 }

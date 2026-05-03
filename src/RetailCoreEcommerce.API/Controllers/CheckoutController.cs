@@ -1,9 +1,14 @@
 using System.Security.Claims;
+using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RetailCoreEcommerce.Application.Abstractions;
 
 namespace RetailCoreEcommerce.API.Controllers;
 
+[ApiVersion("1.0")]
+[Route("v{version:apiVersion}")]
+[Authorize]
 public class CheckoutController : BaseApiController
 {
     private readonly ICheckoutService _checkoutService;

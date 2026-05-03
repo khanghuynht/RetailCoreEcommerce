@@ -5,5 +5,5 @@ namespace RetailCoreEcommerce.Application.Abstractions;
 
 public interface ICheckoutService
 {
-    Task<Result<CheckoutPreviewResponse>> PreviewCheckoutAsync(Guid userId, CancellationToken ct = default);
+    Task<Result<PreviewCheckoutResponse>> PreviewCheckoutAsync(Guid userId, CancellationToken ct = default);
 }

@@ -17,7 +17,7 @@ public class CheckoutService : ICheckoutService
         _unitOfWork = unitOfWork;
     }
     
-    public async Task<Result<CheckoutPreviewResponse>> PreviewCheckoutAsync(Guid userId, CancellationToken ct = default)
+    public async Task<Result<PreviewCheckoutResponse>> PreviewCheckoutAsync(Guid userId, CancellationToken ct = default)
     {
         try
         {
@@ -25,7 +25,7 @@ public class CheckoutService : ICheckoutService
                        ?? new Cart { UserId = userId, UpdatedAt = DateTime.UtcNow };
 
             if (cart.Items.Count == 0)
-                return Result.Success(new CheckoutPreviewResponse { UserId = userId });
+                return Result.Success(new PreviewCheckoutResponse { UserId = userId });
 
             var productRepo = _unitOfWork.GetRepository<Product, Guid>();
             var productIds = cart.Items.Select(i => i.ProductId).Distinct().ToList();
@@ -40,7 +40,7 @@ public class CheckoutService : ICheckoutService
             {
                 if (!products.TryGetValue(item.ProductId, out var product) || !product.IsActive)
                 {
-                    return new CheckoutPreviewItemResponse
+                    return new PreviewCheckoutItemResponse
                     {
                         ProductId = item.ProductId,
                         ProductTitle = item.ProductTitle,
@@ -56,7 +56,7 @@ public class CheckoutService : ICheckoutService
                 var currentPrice = product.SalePrice ?? product.OriginalPrice;
                 var availableStock = product.Inventory.StockQuantity;
 
-                return new CheckoutPreviewItemResponse
+                return new PreviewCheckoutItemResponse
                 {
                     ProductId = product.Id,
                     ProductTitle = product.Title,
@@ -69,7 +69,7 @@ public class CheckoutService : ICheckoutService
                 };
             }).ToList();
 
-            return Result.Success(new CheckoutPreviewResponse
+            return Result.Success(new PreviewCheckoutResponse
             {
                 UserId = userId,
                 Items = previewItems
@@ -77,7 +77,7 @@ public class CheckoutService : ICheckoutService
         }
         catch (Exception ex)
         {
-            return Result.Failure<CheckoutPreviewResponse>(
+            return Result.Failure<PreviewCheckoutResponse>(
                 new Error("CartService.PreviewCheckoutAsync", ex.Message));
         }
     }

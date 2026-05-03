@@ -21,17 +21,21 @@ public class ProductApiService : IProductApiService
     {
         var query = BuildQueryString(request);
         var response = await _httpClient.GetAsync($"v1/products{query}", ct);
-        var json = await response.Content.ReadAsStringAsync(ct);
-        return JsonSerializer.Deserialize<ApiResponse<PaginationResult<GetAllProductResponse>>>(json, JsonOptions)
-               ?? new ApiResponse<PaginationResult<GetAllProductResponse>>();
+        return await DeserializeAsync<PaginationResult<GetAllProductResponse>>(response, ct);
     }
 
     public async Task<ApiResponse<GetProductResponse>> GetByIdAsync(Guid id, CancellationToken ct = default)
     {
         var response = await _httpClient.GetAsync($"v1/products/{id}", ct);
+        return await DeserializeAsync<GetProductResponse>(response, ct);
+    }
+
+    private static async Task<ApiResponse<T>> DeserializeAsync<T>(HttpResponseMessage response, CancellationToken ct)
+    {
         var json = await response.Content.ReadAsStringAsync(ct);
-        return JsonSerializer.Deserialize<ApiResponse<GetProductResponse>>(json, JsonOptions)
-               ?? new ApiResponse<GetProductResponse>();
+        if (string.IsNullOrWhiteSpace(json))
+            return new ApiResponse<T> { IsSuccess = response.IsSuccessStatusCode };
+        return JsonSerializer.Deserialize<ApiResponse<T>>(json, JsonOptions) ?? new ApiResponse<T>();
     }
 
     private static string BuildQueryString(GetProductRequest request)

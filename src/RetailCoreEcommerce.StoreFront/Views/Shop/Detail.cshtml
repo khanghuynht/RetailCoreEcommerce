@@ -140,13 +140,52 @@
 
             <hr />
 
-            <div class="d-flex gap-3 mt-4">
-                <a asp-controller="Shop" asp-action="Index"
-                   asp-route-categoryId="@p.CategoryId"
-                   class="btn btn-outline-secondary">
-                    <i class="bi bi-arrow-left me-1"></i> Back to Shop
-                </a>
-            </div>
+            <!-- Add to Cart -->
+            @if (p.StockQuantity > 0)
+            {
+                <form asp-controller="Cart" asp-action="AddItem" method="post" class="d-flex align-items-center gap-3 mt-4">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="productId" value="@p.Id" />
+                    <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+                    <div class="input-group" style="width:130px;">
+                        <button type="button" class="btn btn-outline-secondary" onclick="adjustQty(-1)">−</button>
+                        <input type="number" id="qty" name="quantity" value="1" min="1" max="@p.StockQuantity"
+                               class="form-control text-center" />
+                        <button type="button" class="btn btn-outline-secondary" onclick="adjustQty(1)">+</button>
+                    </div>
+                    <button type="submit" class="btn btn-primary fw-semibold">
+                        <i class="bi bi-cart-plus me-1"></i>Add to Cart
+                    </button>
+                    <a asp-controller="Shop" asp-action="Index"
+                       asp-route-categoryId="@p.CategoryId"
+                       class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>Back
+                    </a>
+                </form>
+            }
+            else
+            {
+                <div class="d-flex gap-3 mt-4">
+                    <a asp-controller="Shop" asp-action="Index"
+                       asp-route-categoryId="@p.CategoryId"
+                       class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>Back to Shop
+                    </a>
+                </div>
+            }
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        function adjustQty(delta) {
+            var input = document.getElementById('qty');
+            if (!input) return;
+            var val = parseInt(input.value) || 1;
+            var min = parseInt(input.min) || 1;
+            var max = parseInt(input.max) || 99;
+            input.value = Math.min(max, Math.max(min, val + delta));
+        }
+    </script>
+}
