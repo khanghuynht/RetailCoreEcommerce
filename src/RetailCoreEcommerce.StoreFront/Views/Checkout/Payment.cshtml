@@ -1,0 +1,377 @@
+@model RetailCoreEcommerce.StoreFront.Models.PaymentViewModel
+@{
+    ViewData["Title"] = "Payment";
+    var preview = Model.Preview!;
+    var absoluteReturnRoot = $"{Context.Request.Scheme}://{Context.Request.Host}";
+}
+
+<div class="container py-5">
+
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Cart" asp-action="Index">Cart</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Checkout" asp-action="Preview">Preview</a></li>
+            <li class="breadcrumb-item active">Payment</li>
+        </ol>
+    </nav>
+
+    <div class="row g-5">
+
+        <!-- ── Shipping + Payment ───────────────────────────────── -->
+        <div class="col-lg-7">
+
+            <h4 class="fw-bold mb-4"><i class="bi bi-truck me-2" style="color:var(--accent);"></i>Shipping Information
+            </h4>
+
+            <form id="payment-form" novalidate data-phase="shipping">
+                @Html.AntiForgeryToken()
+
+                <fieldset id="shipping-fields" class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label asp-for="RecipientName" class="form-label fw-semibold"></label>
+                        <input asp-for="RecipientName" class="form-control" placeholder="John Doe"/>
+                        <span asp-validation-for="RecipientName" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Email" class="form-label fw-semibold"></label>
+                        <input asp-for="Email" class="form-control" placeholder="john@example.com"/>
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+                    <div class="col-12">
+                        <label asp-for="PhoneNumber" class="form-label fw-semibold"></label>
+                        <input asp-for="PhoneNumber" class="form-control" placeholder="+84 123 456 789"/>
+                        <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                    </div>
+                    <div class="col-12">
+                        <label asp-for="StreetAddress" class="form-label fw-semibold"></label>
+                        <input asp-for="StreetAddress" class="form-control" placeholder="123 Main Street"/>
+                        <span asp-validation-for="StreetAddress" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Province" class="form-label fw-semibold"></label>
+                        <input asp-for="Province" class="form-control" placeholder="Ho Chi Minh City"/>
+                        <span asp-validation-for="Province" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Ward" class="form-label fw-semibold"></label>
+                        <input asp-for="Ward" class="form-control" placeholder="Ward 1"/>
+                        <span asp-validation-for="Ward" class="text-danger small"></span>
+                    </div>
+                    <div class="col-12">
+                        <label asp-for="Notes" class="form-label fw-semibold">
+                            Notes <span class="text-muted fw-normal">(optional)</span>
+                        </label>
+                        <textarea asp-for="Notes" class="form-control" rows="2"
+                                  placeholder="Delivery instructions…"></textarea>
+                    </div>
+                </fieldset>
+
+                <hr/>
+
+                <!-- Payment Element: needs clientSecret from PlaceOrder — not the old standalone Card Element -->
+                <div id="payment-section" class="mb-4">
+                    <h4 class="fw-bold mb-3">
+                        <i class="bi bi-wallet2 me-2" style="color:var(--accent);"></i>Payment
+                    </h4>
+                    <p id="payment-hint" class="text-muted small mb-3">
+                        Complete shipping above, then use the button below. Stripe will load card, wallets, Link, and
+                        other methods your account supports.
+                    </p>
+                    <div id="payment-element" class="d-none rounded border bg-white p-3"></div>
+                    <div id="payment-errors" class="text-danger small mt-2" role="alert"></div>
+                </div>
+
+                <div id="payment-message" class="alert alert-danger d-none mb-3"></div>
+
+                <button id="pay-btn" type="submit" class="btn btn-primary w-100 fw-semibold py-2">
+                    <span id="pay-text">
+                        <i class="bi bi-arrow-right-circle me-2"></i>Continue to payment
+                    </span>
+                    <span id="pay-spinner" class="d-none">
+                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>Working…
+                    </span>
+                </button>
+
+                <p class="text-muted text-center small mt-3 mb-0">
+                    <i class="bi bi-shield-lock me-1"></i>
+                    Secured by <strong>Stripe</strong>. Payment methods depend on currency, Dashboard settings, and your
+                    device.
+                </p>
+            </form>
+        </div>
+
+        <!-- ── Order Summary ──────────────────────────────────── -->
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm sticky-top" style="top:80px;">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">Order Summary</h5>
+
+                    @foreach (var item in preview.Items)
+                    {
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            @if (!string.IsNullOrEmpty(item.ThumbnailUrl))
+                            {
+                                <img src="@item.ThumbnailUrl"
+                                     alt="@item.ProductTitle"
+                                     class="rounded"
+                                     style="width:40px;height:40px;object-fit:cover;flex-shrink:0;"/>
+                            }
+                            <div class="flex-grow-1 small">
+                                <div class="fw-semibold">@item.ProductTitle</div>
+                                <div class="text-muted">× @item.Quantity</div>
+                            </div>
+                            <span class="small fw-semibold">@item.SubTotal.ToString("C") $</span>
+                        </div>
+                    }
+
+                    <hr/>
+
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="text-muted">Subtotal</span>
+                        <span>@preview.Total.ToString("C") $</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-muted">Shipping</span>
+                        <span class="text-success">Free</span>
+                    </div>
+                    <div class="d-flex justify-content-between fw-bold fs-5">
+                        <span>Total</span>
+                        <span style="color:var(--accent);">@preview.Total.ToString("C") $</span>
+                    </div>
+                </div>
+            </div>
+
+            <a asp-action="Preview" class="btn btn-outline-secondary w-100 mt-3 btn-sm">
+                <i class="bi bi-arrow-left me-1"></i>Back to Preview
+            </a>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        /**
+         * Step A — data-phase="shipping" (first Submit on "Continue to payment")
+         *   1. Client validates shipping fields.
+         *   2. POST /Checkout/PlaceOrder → MVC → API v1/place-order
+         *      → persists order (pending), attaches PaymentIntent, returns clientSecret + pk.
+         *   3. Load Stripe.js, mount Payment Element (tabs: card, Link, wallets, etc.).
+         *      Billing fields are prefilled from shipping via defaultValues; user can edit in Stripe UI (country stays ISO-2 in code).
+         *   4. Flip form to data-phase="pay", change button to "Pay …", lock shipping fields.
+         * Step B — data-phase="pay" (second Submit)
+         *   1. stripe.confirmPayment({ elements, confirmParams: { return_url } })
+         *   2. Most cards: completes in-page (redirect: 'if_required').
+         *      Some methods (3DS, certain wallets): Stripe redirects browser to return_url
+         *      → PaymentReturn.cshtml finishes the flow.
+         *   3. On success (in-page): navigate to /Checkout/Success?orderId=&orderCode=
+         *      Otherwise: /Checkout/Failed or stay for redirect completion.
+         */
+         
+        (function () {
+            // Base URL for Stripe return_url (must be absolute). Order id/code are appended so PaymentReturn can redirect you.
+            const ABS_RETURN_ROOT = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(absoluteReturnRoot));
+            
+            /** Populated after Step A — API response (orderId, orderCode, clientSecret, publishableKey). */
+            let stripe = null;
+            let elements = null;
+            let paymentElement = null;
+            
+            /** Shipping + notes JSON sent to PlaceOrder. */
+            let orderPayload = null;
+            
+            /** Same as orderPayload response from server; kept for Step B redirects. */
+            let orderMeta = null;
+
+            const form = document.getElementById('payment-form');
+            const hint = document.getElementById('payment-hint');
+            const pel = document.getElementById('payment-element');
+            const shipFieldset = document.getElementById('shipping-fields');
+
+            /** Single form submit: dispatcher between Step A (prepare) and Step B (pay). */
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const phase = form.getAttribute('data-phase');
+
+                if (phase === 'shipping') {
+                    await runShippingAndPreparePayment();
+                    return;
+                }
+
+                await confirmPaymentPhase();
+            });
+
+            /** Step A — PlaceOrder on server, then mount Stripe Payment Element. */
+            async function runShippingAndPreparePayment() {
+                const payload = collectShippingPayload();
+                const missing = ['recipientName', 'email', 'phoneNumber', 'streetAddress', 'province', 'ward'].filter(k => !payload[k]);
+                if (missing.length) {
+                    showError('Please fill in all required fields.');
+                    return;
+                }
+                orderPayload = payload;
+
+                setLoading(true);
+                hideError();
+                hidePaymentError();
+
+                const token = form.querySelector('[name="__RequestVerificationToken"]').value;
+
+                let orderData;
+                try {
+                    // Storefront MVC proxies to API; HttpClient sends customer JWT from cookies.
+                    const res = await fetch('/Checkout/PlaceOrder', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
+                        body: JSON.stringify(orderPayload)
+                    });
+                    const json = await res.json();
+                    if (!json.isSuccess) {
+                        showError(json.error?.message ?? 'Could not create order.');
+                        setLoading(false);
+                        return;
+                    }
+                    orderData = json.data;
+                } catch {
+                    showError('Network error. Please try again.');
+                    setLoading(false);
+                    return;
+                }
+
+                orderMeta = orderData;
+
+                // One Stripe instance per publishable key from API (test vs live consistency).
+                stripe = Stripe(orderData.publishableKey);
+
+                pel.classList.remove('d-none');
+                if (hint) hint.classList.add('d-none');
+
+                // clientSecret binds this UI to exactly one PaymentIntent (and its amount/currency).
+                elements = stripe.elements({
+                    clientSecret: orderData.clientSecret,
+                    appearance: {
+                        theme: 'stripe',
+                        variables: {
+                            colorPrimary: '#0d6efd',
+                            borderRadius: '6px'
+                        }
+                    }
+                });
+
+                if (paymentElement) {
+                    paymentElement.destroy();
+                    paymentElement = null;
+                }
+
+                // Prefill Stripe billing UI from our shipping fields; shopper can edit in Stripe before paying.
+                paymentElement = elements.create('payment', {
+                    layout: { type: 'tabs', defaultCollapsed: false },
+                    defaultValues: {
+                        billingDetails: {
+                            name: orderPayload.recipientName,
+                            email: orderPayload.email,
+                            phone: orderPayload.phoneNumber,
+                            address: {
+                                line1: orderPayload.streetAddress,
+                                city: orderPayload.ward,
+                                state: orderPayload.province,
+                                country: 'VN'
+                            }
+                        }
+                    }
+                });
+                paymentElement.mount('#payment-element');
+                paymentElement.on('change', (ev) => {
+                    document.getElementById('payment-errors').textContent = ev.error ? ev.error.message : '';
+                });
+
+                form.setAttribute('data-phase', 'pay');
+                document.getElementById('pay-text').innerHTML =
+                    '<i class="bi bi-lock-fill me-2"></i>Pay @(preview.Total.ToString("C")) $';
+
+                shipFieldset.disabled = true;
+                setLoading(false);
+            }
+
+            /** Step B — Submit chosen payment method to Stripe; may redirect (see top comment). */
+            async function confirmPaymentPhase() {
+                if (!stripe || !elements || !paymentElement || !orderMeta) {
+                    showError('Payment UI not ready.');
+                    return;
+                }
+
+                setLoading(true);
+                hideError();
+
+                // Stripe appends payment_intent_* query params when it sends the user back here after a redirect.
+                const returnUrl = ABS_RETURN_ROOT
+                    + '/Checkout/PaymentReturn'
+                    + '?orderId=' + encodeURIComponent(orderMeta.orderId)
+                    + '&orderCode=' + encodeURIComponent(orderMeta.orderCode);
+
+                // Do not pass billing_details inside confirmParams — invalid for Payment Element; billing comes from defaults + shopper edits above.
+                const { error, paymentIntent } = await stripe.confirmPayment({
+                    elements,
+                    confirmParams: {
+                        return_url: returnUrl
+                    },
+                    redirect: 'if_required'
+                });
+
+                if (error) {
+                    showError(error.message);
+                    setLoading(false);
+                    return;
+                }
+
+                // In-page success (no full redirect to return_url)
+                if (paymentIntent && paymentIntent.status === 'succeeded') {
+                    window.location.href = '/Checkout/Success?orderId=' + encodeURIComponent(orderMeta.orderId)
+                        + '&orderCode=' + encodeURIComponent(orderMeta.orderCode);
+                } else if (paymentIntent && (paymentIntent.status === 'requires_action' || paymentIntent.status === 'processing')) {
+                    // User may have been sent to returnUrl; if_required left the tab here — PaymentReturn or webhook will settle.
+                    setLoading(false);
+                } else {
+                    window.location.href = '/Checkout/Failed?orderId=' + encodeURIComponent(orderMeta.orderId)
+                        + '&orderCode=' + encodeURIComponent(orderMeta.orderCode);
+                }
+            }
+
+            /** Body for POST /Checkout/PlaceOrder (JSON property names match API contract). */
+            function collectShippingPayload() {
+                const f = form;
+                return {
+                    recipientName: f.querySelector('[name="RecipientName"]').value.trim(),
+                    email: f.querySelector('[name="Email"]').value.trim(),
+                    phoneNumber: f.querySelector('[name="PhoneNumber"]').value.trim(),
+                    streetAddress: f.querySelector('[name="StreetAddress"]').value.trim(),
+                    province: f.querySelector('[name="Province"]').value.trim(),
+                    ward: f.querySelector('[name="Ward"]').value.trim(),
+                    notes: (f.querySelector('[name="Notes"]')?.value ?? '').trim(),
+                };
+            }
+
+            function setLoading(on) {
+                document.getElementById('pay-btn').disabled = on;
+                document.getElementById('pay-text').classList.toggle('d-none', on);
+                document.getElementById('pay-spinner').classList.toggle('d-none', !on);
+            }
+
+            /** Banner under the form (not the small text under the Payment Element). */
+            function showError(msg) {
+                const el = document.getElementById('payment-message');
+                el.textContent = msg;
+                el.classList.remove('d-none');
+            }
+
+            function hideError() {
+                document.getElementById('payment-message').classList.add('d-none');
+            }
+
+            function hidePaymentError() {
+                document.getElementById('payment-errors').textContent = '';
+            }
+        })();
+    </script>
+}

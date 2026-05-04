@@ -3,6 +3,7 @@ using RetailCoreEcommerce.StoreFront.Services.Auth;
 using RetailCoreEcommerce.StoreFront.Services.Cart;
 using RetailCoreEcommerce.StoreFront.Services.Category;
 using RetailCoreEcommerce.StoreFront.Services.Checkout;
+using RetailCoreEcommerce.StoreFront.Services.Order;
 using RetailCoreEcommerce.StoreFront.Services.Product;
 using RetailCoreEcommerce.StoreFront.Services.TokenStorage;
 
@@ -41,6 +42,12 @@ builder.Services.AddHttpClient<ICartApiService, CartApiService>(client =>
 
 // Checkout client — requires auth; Bearer token attached via AuthTokenHandler
 builder.Services.AddHttpClient<ICheckoutApiService, CheckoutApiService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+}).AddHttpMessageHandler<AuthTokenHandler>();
+
+// Order client — requires auth; Bearer token attached via AuthTokenHandler
+builder.Services.AddHttpClient<IOrderApiService, OrderApiService>(client =>
 {
     client.BaseAddress = new Uri(apiBaseUrl);
 }).AddHttpMessageHandler<AuthTokenHandler>();

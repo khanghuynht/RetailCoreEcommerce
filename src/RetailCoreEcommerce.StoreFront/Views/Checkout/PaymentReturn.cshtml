@@ -1,0 +1,67 @@
+@{
+    ViewData["Title"] = "Completing payment";
+}
+
+<div class="container py-5 text-center">
+    <div class="spinner-border text-primary mb-3" role="status"></div>
+    <p class="text-muted mb-0">Confirming your payment…</p>
+</div>
+
+@section Scripts {
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+         * When confirmPayment uses return_url, some payment methods complete by sending
+         * the browser here. Query string includes Stripe’s payment_intent_client_secret
+         * (and we pass orderId/orderCode so we can route to Success/Failed).
+         *
+         * Flow
+         *   1. Read clientSecret + our order params from the URL.
+         *   2. Load publishable key (same origin as Payment page).
+         *   3. retrievePaymentIntent(clientSecret) → check status === 'succeeded'.
+         *   4. Redirect to /Checkout/Success or /Checkout/Failed.
+         *
+         * Note: Backend truth (webhooks) still finalizes order + cart; this page is UX only.
+         */
+        (async function () {
+            const params = new URLSearchParams(window.location.search);
+            const clientSecret = params.get('payment_intent_client_secret');
+            const orderId = params.get('orderId');
+            const orderCode = params.get('orderCode');
+
+            /** Missing params or failed intent → same Failed page the in-flow path uses. */
+            function goFailed() {
+                window.location.href = '/Checkout/Failed?orderId=' + encodeURIComponent(orderId ?? '')
+                    + '&orderCode=' + encodeURIComponent(orderCode ?? '');
+            }
+
+            if (!clientSecret || !orderId || !orderCode) {
+                goFailed();
+                return;
+            }
+
+            let pk = '';
+            try {
+                const pkRes = await fetch('/Checkout/PublishableKey');
+                if (pkRes.ok) pk = (await pkRes.text()).trim();
+            } catch { /* optional: log */ }
+
+            if (!pk) {
+                goFailed();
+                return;
+            }
+
+            const stripe = Stripe(pk);
+            try {
+                const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
+                if (paymentIntent && paymentIntent.status === 'succeeded') {
+                    window.location.href = '/Checkout/Success?orderId=' + encodeURIComponent(orderId)
+                        + '&orderCode=' + encodeURIComponent(orderCode);
+                } else {
+                    goFailed();
+                }
+            } catch {
+                goFailed();
+            }
+        })();
+    </script>
+}
