@@ -35,11 +35,11 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.Property(x => x.Status).HasConversion(
             p => p.ToString(),
             p => Enum.Parse<OrderStatus>(p));
+        
 
-        // Convert enum to string
-        builder.Property(x => x.PaymentMethod).HasConversion(
-            p => p.ToString(),
-            p => Enum.Parse<PaymentMethod>(p)
-        );
+        // Convert nullable enum to string
+        builder.Property(x => x.PaymentStatus).HasConversion(
+            p => p.HasValue ? p.Value.ToString() : null,
+            p => p != null ? Enum.Parse<PaymentStatus>(p) : (PaymentStatus?)null);
     }
 }
