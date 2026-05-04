@@ -17,8 +17,9 @@ public class Order : AuditableEntity<Guid>
     public required string Province { get; set; } = null!;
     public required string Ward { get; set; } = null!;
     public decimal? ShippingFee { get; set; }
-    public PaymentMethod PaymentMethod { get; set; }
     public string Notes { get; set; } = null!;
+    public string? StripePaymentIntentId { get; set; }
+    public PaymentStatus? PaymentStatus { get; set; }
     public virtual User User { get; set; } = null!;
     public virtual ICollection<OrderItem> OrderItems { get; set; } = [];
     public virtual ICollection<OrderHistory> OrderHistories { get; set; } = [];

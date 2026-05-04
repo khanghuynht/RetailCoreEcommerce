@@ -2,6 +2,7 @@ namespace RetailCoreEcommerce.Domain.Constants;
 
 public enum PaymentMethod
 {
-    COD = 1,
-    Stripe = 2
+    Card = 1,
+    BankTransfer = 2,
+    PayPal = 3
 }

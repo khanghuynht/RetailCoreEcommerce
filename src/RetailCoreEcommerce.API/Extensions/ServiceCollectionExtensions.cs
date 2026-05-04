@@ -22,6 +22,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ICartService, CartService>();
         services.AddScoped<ICheckoutService, CheckoutService>();
+        services.AddScoped<IOrderService, OrderService>();
     }
 
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
@@ -30,5 +31,6 @@ public static class ServiceCollectionExtensions
         services.ConfigureJwtSecurityToken();
         services.ConfigureBCryptPasswordHasher();
         services.ConfigureRedisCache(configuration);
+        services.ConfigureStripe(configuration);
     }
 }

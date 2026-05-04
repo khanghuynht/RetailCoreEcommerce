@@ -3,6 +3,7 @@ using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RetailCoreEcommerce.Application.Abstractions;
+using RetailCoreEcommerce.Contracts.Models.Order;
 
 namespace RetailCoreEcommerce.API.Controllers;
 
@@ -12,10 +13,12 @@ namespace RetailCoreEcommerce.API.Controllers;
 public class CheckoutController : BaseApiController
 {
     private readonly ICheckoutService _checkoutService;
+    private readonly IOrderService _orderService;
 
-    public CheckoutController(ICheckoutService checkoutService)
+    public CheckoutController(ICheckoutService checkoutService, IOrderService orderService)
     {
         _checkoutService = checkoutService;
+        _orderService = orderService;
     }
 
     [HttpGet("preview-checkout")]
@@ -25,6 +28,18 @@ public class CheckoutController : BaseApiController
         if (userId is null) return Unauthorized();
 
         var result = await _checkoutService.PreviewCheckoutAsync(userId.Value, cancellationToken);
+        return FromResult(result);
+    }
+
+    [HttpPost("place-order")]
+    public async Task<IActionResult> PlaceOrder(
+        [FromBody] PlaceOrderRequest request,
+        CancellationToken cancellationToken)
+    {
+        var userId = GetUserId();
+        if (userId is null) return Unauthorized();
+
+        var result = await _orderService.PlaceOrderAsync(userId.Value, request, cancellationToken);
         return FromResult(result);
     }
 

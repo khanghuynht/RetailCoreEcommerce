@@ -8,6 +8,7 @@ using RetailCoreEcommerce.Infrastructure.Bcrypt;
 using RetailCoreEcommerce.Infrastructure.Cloudinary;
 using RetailCoreEcommerce.Infrastructure.Jwt;
 using RetailCoreEcommerce.Infrastructure.Redis;
+using RetailCoreEcommerce.Infrastructure.Stripe;
 using StackExchange.Redis;
 
 namespace RetailCoreEcommerce.Infrastructure.Extensions;
@@ -65,5 +66,17 @@ public static class ServiceCollectionExtensions
         });
 
         services.AddScoped<IDataCache, RedisService>();
+    }
+
+    public static void ConfigureStripe(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddOptions<StripeSettings>()
+            .Bind(configuration.GetSection(StripeSettings.Section))
+            .Validate(s => !string.IsNullOrWhiteSpace(s.SecretKey), "StripeSettings:SecretKey is required")
+            .Validate(s => !string.IsNullOrWhiteSpace(s.PublishableKey), "StripeSettings:PublishableKey is required")
+            .Validate(s => !string.IsNullOrWhiteSpace(s.WebhookSecret), "StripeSettings:WebhookSecret is required")
+            .ValidateOnStart();
+
+        services.AddScoped<IStripeService, StripeService>();
     }
 }
