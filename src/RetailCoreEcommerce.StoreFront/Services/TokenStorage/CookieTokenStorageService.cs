@@ -10,11 +10,13 @@ public class CookieTokenStorageService(IHttpContextAccessor httpContextAccessor)
 
     public void StoreSession(string accessToken, string refreshToken, string fullName)
     {
+        // Lax — required so cookies are sent when the user returns from Stripe / 3DS (cross-site redirect → same-site GET).
+        // Strict would omit cookies on that navigation, so Checkout/PaymentReturn thinks the user is logged out.
         var secureOptions = new CookieOptions
         {
             HttpOnly = true,
             Secure = true,
-            SameSite = SameSiteMode.Strict,
+            SameSite = SameSiteMode.Lax,
             Expires = DateTimeOffset.UtcNow.AddDays(7)
         };
 
@@ -23,7 +25,7 @@ public class CookieTokenStorageService(IHttpContextAccessor httpContextAccessor)
         {
             HttpOnly = false,
             Secure = true,
-            SameSite = SameSiteMode.Strict,
+            SameSite = SameSiteMode.Lax,
             Expires = DateTimeOffset.UtcNow.AddDays(7)
         };
 
