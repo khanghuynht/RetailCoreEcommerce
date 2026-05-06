@@ -30,7 +30,7 @@ public class UserService : IUserService
                      x.FirstName.Contains(request.Name) ||
                      x.LastName.Contains(request.Name)) &&
                     (request.Email == null || x.Email.Contains(request.Email)),
-                orderBy: q => q.OrderBy(x => x.CreatedAt),
+                orderBy: q => q.OrderByDescending(x => x.CreatedAt),
                 pagination: request,
                 cancellationToken: cancellationToken);
 
