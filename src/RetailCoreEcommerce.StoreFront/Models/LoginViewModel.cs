@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace RetailCoreEcommerce.StoreFront.Models.Auth;
+namespace RetailCoreEcommerce.StoreFront.Models;
 
 public class LoginViewModel
 {

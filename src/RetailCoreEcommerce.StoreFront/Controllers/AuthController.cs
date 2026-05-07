@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RetailCoreEcommerce.Contracts.Constants;
 using RetailCoreEcommerce.Contracts.Models.Auth;
+using RetailCoreEcommerce.StoreFront.Models;
 using RetailCoreEcommerce.StoreFront.Models.Auth;
 using RetailCoreEcommerce.StoreFront.Services.Auth;
 using RetailCoreEcommerce.StoreFront.Services.Category;
