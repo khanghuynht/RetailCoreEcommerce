@@ -1,4 +1,4 @@
-namespace RetailCoreEcommerce.Domain.Abstractions;
+namespace RetailCoreEcommerce.Contracts.Domain;
 
 /// <summary>
 ///     Base entity class that implements basic entity properties

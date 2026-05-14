@@ -23,6 +23,7 @@
     </ItemGroup>
     
     <ItemGroup>
+      <Folder Include="CQRS\" />
       <Folder Include="EventBus\" />
     </ItemGroup>
     

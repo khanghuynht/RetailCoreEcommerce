@@ -1,4 +1,5 @@
 using RetailCoreEcommerce.Application.Abstractions;
+using RetailCoreEcommerce.Contracts.Infrastructure;
 using RetailCoreEcommerce.Contracts.Models.Cart;
 using RetailCoreEcommerce.Contracts.Models.Checkout;
 using RetailCoreEcommerce.Contracts.Shared;

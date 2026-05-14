@@ -1,8 +1,8 @@
 using System.Linq.Expressions;
+using RetailCoreEcommerce.Contracts.Domain;
 using RetailCoreEcommerce.Contracts.Shared;
-using RetailCoreEcommerce.Domain.Abstractions;
 
-namespace RetailCoreEcommerce.Application.Abstractions;
+namespace RetailCoreEcommerce.Contracts.Infrastructure;
 
 public interface IGenericRepository<TEntity, in TKey> where TEntity : class, IEntity<TKey>
 {

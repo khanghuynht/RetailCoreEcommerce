@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using Moq;
 using RetailCoreEcommerce.Application.Abstractions;
 using RetailCoreEcommerce.Application.Services;
+using RetailCoreEcommerce.Contracts.Infrastructure;
 using RetailCoreEcommerce.Contracts.Models.Auth;
 using RetailCoreEcommerce.Contracts.Models.Token;
 using RetailCoreEcommerce.Contracts.Shared;
@@ -93,7 +94,16 @@ public class AuthServiceTests
         password.Setup(p => p.VerifyPassword("secret", SampleUser.PasswordHash)).Returns(true);
 
         var tokens = new Mock<ITokenSecurity>();
-        tokens.Setup(t => t.GenerateAccessToken(SampleUser)).Returns("access-jwt");
+
+        var userClaim = new UserClaim(
+            SampleUser.Id.ToString(),
+            SampleUser.Email,
+            SampleUser.Username,
+            SampleUser.FirstName,
+            SampleUser.LastName,
+            SampleUser.Role.ToString());
+
+        tokens.Setup(t => t.GenerateAccessToken(userClaim)).Returns("access-jwt");
         tokens.Setup(t => t.GenerateRefreshToken()).Returns("refresh-xyz");
         tokens.Setup(t => t.GetRefreshTokenExpiry()).Returns(RefreshExpiry);
 
@@ -171,7 +181,16 @@ public class AuthServiceTests
         var tokens = new Mock<ITokenSecurity>();
         tokens.Setup(t => t.ValidateAccessToken("access", false))
             .Returns(new TokenValidationResult(true, UserId.ToString(), Array.Empty<TokenClaim>()));
-        tokens.Setup(t => t.GenerateAccessToken(SampleUser)).Returns("new-access");
+        
+        var userClaim = new UserClaim(
+            SampleUser.Id.ToString(),
+            SampleUser.Email,
+            SampleUser.Username,
+            SampleUser.FirstName,
+            SampleUser.LastName,
+            SampleUser.Role.ToString());
+        
+        tokens.Setup(t => t.GenerateAccessToken(userClaim)).Returns("new-access");
         tokens.Setup(t => t.GenerateRefreshToken()).Returns("new-refresh");
         tokens.Setup(t => t.GetRefreshTokenExpiry()).Returns(RefreshExpiry);
 

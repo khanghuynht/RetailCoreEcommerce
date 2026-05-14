@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using RetailCoreEcommerce.Application.Abstractions;
+using RetailCoreEcommerce.Contracts.Infrastructure;
 using RetailCoreEcommerce.Contracts.Models.Token;
 using RetailCoreEcommerce.Contracts.Settings;
 using RetailCoreEcommerce.Contracts.Shared;
@@ -36,16 +37,16 @@ public class JwtSecurityToken : ITokenSecurity
 
     // ── Public interface methods 
 
-    public string GenerateAccessToken(User user)
+    public string GenerateAccessToken(UserClaim user)
     {
         var claims = new List<Claim>
         {
-            new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new(JwtRegisteredClaimNames.Sub, user.Id),
             new(JwtRegisteredClaimNames.Email, user.Email),
             new(JwtRegisteredClaimNames.UniqueName, user.Username),
             new(JwtRegisteredClaimNames.GivenName, user.FirstName),
             new(JwtRegisteredClaimNames.FamilyName, user.LastName),
-            new(ClaimTypes.Role, user.Role.ToString()),
+            new(ClaimTypes.Role, user.Role),
         };
 
         return GenerateToken(claims);

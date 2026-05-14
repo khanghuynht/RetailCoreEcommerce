@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using RetailCoreEcommerce.Contracts.Domain;
 using RetailCoreEcommerce.Domain;
-using RetailCoreEcommerce.Domain.Abstractions;
 
 namespace RetailCoreEcommerce.Persistence.Data;
 

@@ -1,7 +1,4 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using RetailCoreEcommerce.Domain.Abstractions;
-using RetailCoreEcommerce.Domain.Constants;
+using RetailCoreEcommerce.Contracts.Domain;
 
 namespace RetailCoreEcommerce.Domain;
 

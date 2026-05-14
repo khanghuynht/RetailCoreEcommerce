@@ -1,4 +1,4 @@
-namespace RetailCoreEcommerce.Domain.Abstractions;
+namespace RetailCoreEcommerce.Contracts.Domain;
 
 public interface IAuditable
 {

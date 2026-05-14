@@ -1,4 +1,4 @@
-namespace RetailCoreEcommerce.Application.Abstractions;
+namespace RetailCoreEcommerce.Contracts.Infrastructure;
 
 public interface IPasswordHashed
 {

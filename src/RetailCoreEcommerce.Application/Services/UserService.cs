@@ -1,4 +1,5 @@
 using RetailCoreEcommerce.Application.Abstractions;
+using RetailCoreEcommerce.Contracts.Infrastructure;
 using RetailCoreEcommerce.Contracts.Models.User;
 using RetailCoreEcommerce.Contracts.Shared;
 using RetailCoreEcommerce.Domain;

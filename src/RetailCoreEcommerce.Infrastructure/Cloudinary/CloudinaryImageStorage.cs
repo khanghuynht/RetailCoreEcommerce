@@ -2,6 +2,7 @@ using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.Extensions.Options;
 using RetailCoreEcommerce.Application.Abstractions;
+using RetailCoreEcommerce.Contracts.Infrastructure;
 using RetailCoreEcommerce.Contracts.Settings;
 using ImageUploadResult = RetailCoreEcommerce.Contracts.Models.File.ImageUploadResult;
 

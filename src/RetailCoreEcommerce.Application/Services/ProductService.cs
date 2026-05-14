@@ -1,4 +1,5 @@
 using RetailCoreEcommerce.Application.Abstractions;
+using RetailCoreEcommerce.Contracts.Infrastructure;
 using RetailCoreEcommerce.Contracts.Models.Product;
 using RetailCoreEcommerce.Contracts.Models.ProductImage;
 using RetailCoreEcommerce.Contracts.Shared;

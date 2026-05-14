@@ -1,4 +1,5 @@
 using RetailCoreEcommerce.Application.Abstractions;
+using RetailCoreEcommerce.Contracts.Infrastructure;
 using RetailCoreEcommerce.Contracts.Models.Auth;
 using RetailCoreEcommerce.Contracts.Shared;
 using RetailCoreEcommerce.Domain;
@@ -44,7 +45,9 @@ public class AuthService : IAuthService
                     "Invalid username or password."));
             }
 
-            var accessToken = _tokenSecurity.GenerateAccessToken(user);
+            var accessToken = _tokenSecurity.GenerateAccessToken(new UserClaim(user.Id.ToString(), user.Email,
+                user.Username, user.FirstName, user.LastName, user.Role.ToString()));
+            
             var refreshToken = _tokenSecurity.GenerateRefreshToken();
 
             await _dataCache.SetCacheAsync($"refresh_token:{user.Id}", refreshToken,
@@ -90,7 +93,9 @@ public class AuthService : IAuthService
             if (user is null)
                 return Result.Failure<LoginResponse>(new Error("Auth.RefreshToken", "User not found."));
 
-            var newAccessToken = _tokenSecurity.GenerateAccessToken(user);
+            var newAccessToken = _tokenSecurity.GenerateAccessToken(new UserClaim(user.Id.ToString(), user.Email,
+                user.Username, user.FirstName, user.LastName, user.Role.ToString()));
+
             var newRefreshToken = _tokenSecurity.GenerateRefreshToken();
             var refreshExpiry = _tokenSecurity.GetRefreshTokenExpiry();
 
@@ -142,14 +147,14 @@ public class AuthService : IAuthService
         try
         {
             var repo = _unitOfWork.GetRepository<User, Guid>();
-            
+
             var existingUser = await repo.AnyAsync(
                 u => u.Email == request.Email || u.Username == request.Username,
                 cancellationToken: ct);
-            
+
             if (existingUser)
                 return Result.Failure(new Error("AuthService.RegisterAsync", "Email or username is already taken."));
-            
+
             var user = new User
             {
                 Email = request.Email,
@@ -160,7 +165,7 @@ public class AuthService : IAuthService
                 PhoneNumber = request.PhoneNumber,
                 Role = UserRole.Customer
             };
-            
+
             repo.Add(user);
             await _unitOfWork.SaveChangesAsync();
             return Result.Success();

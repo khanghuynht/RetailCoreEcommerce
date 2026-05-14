@@ -1,4 +1,4 @@
-using RetailCoreEcommerce.Domain.Abstractions;
+using RetailCoreEcommerce.Contracts.Domain;
 
 namespace RetailCoreEcommerce.Domain;
 

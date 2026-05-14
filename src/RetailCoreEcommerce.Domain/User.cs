@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using RetailCoreEcommerce.Domain.Abstractions;
+using RetailCoreEcommerce.Contracts.Domain;
 using RetailCoreEcommerce.Domain.Constants;
 
 namespace RetailCoreEcommerce.Domain;

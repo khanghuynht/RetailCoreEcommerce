@@ -1,11 +1,10 @@
 using RetailCoreEcommerce.Contracts.Models.Token;
-using RetailCoreEcommerce.Domain;
 
-namespace RetailCoreEcommerce.Application.Abstractions;
+namespace RetailCoreEcommerce.Contracts.Infrastructure;
 
 public interface ITokenSecurity
 {
-    string GenerateAccessToken(User user);
+    string GenerateAccessToken(UserClaim user);
     TokenValidationResult ValidateAccessToken(string token, bool validateLifetime = true);
     DateTime? GetExpirationTimeFromToken(string token);
     

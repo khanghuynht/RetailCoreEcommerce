@@ -1,5 +1,6 @@
 using System.Text.Json;
 using RetailCoreEcommerce.Application.Abstractions;
+using RetailCoreEcommerce.Contracts.Infrastructure;
 using StackExchange.Redis;
 
 namespace RetailCoreEcommerce.Infrastructure.Redis;
