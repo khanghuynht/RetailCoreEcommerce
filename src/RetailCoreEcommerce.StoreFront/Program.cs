@@ -1,4 +1,3 @@
-using RetailCoreEcommerce.StoreFront.Services;
 using RetailCoreEcommerce.StoreFront.Services.Auth;
 using RetailCoreEcommerce.StoreFront.Services.Cart;
 using RetailCoreEcommerce.StoreFront.Services.Category;

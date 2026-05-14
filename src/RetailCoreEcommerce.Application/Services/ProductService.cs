@@ -62,7 +62,8 @@ public class ProductService : IProductService
                     SoldQuantity = 0
                 }
             };
-
+            
+            
             productRepo.Add(product);
             await _unitOfWork.SaveChangesAsync();
             return Result.Success();
