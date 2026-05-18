@@ -1,6 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
-
 namespace RetailCoreEcommerce.Contracts.Models.Inventory;
 
 public class UpdateInventoryQuantityRequest

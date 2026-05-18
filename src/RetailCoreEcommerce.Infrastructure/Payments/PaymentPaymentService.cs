@@ -1,18 +1,17 @@
 using Microsoft.Extensions.Options;
-using RetailCoreEcommerce.Application.Abstractions;
-using RetailCoreEcommerce.Contracts.Infrastructure;
+using RetailCoreEcommerce.Contracts.Abstractions.Services;
 using RetailCoreEcommerce.Contracts.Settings;
 using Stripe;
 
-namespace RetailCoreEcommerce.Infrastructure.Stripe;
+namespace RetailCoreEcommerce.Infrastructure.Payments;
 
-public class StripeService : IStripeService
+public class PaymentPaymentService : IPaymentService
 {
     private readonly StripeSettings _settings;
 
     public string PublishableKey => _settings.PublishableKey;
 
-    public StripeService(IOptions<StripeSettings> settings)
+    public PaymentPaymentService(IOptions<StripeSettings> settings)
     {
         _settings = settings.Value;
         StripeConfiguration.ApiKey = _settings.SecretKey;

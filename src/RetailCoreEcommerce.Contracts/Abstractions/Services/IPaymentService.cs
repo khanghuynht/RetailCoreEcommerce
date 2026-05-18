@@ -1,6 +1,6 @@
-namespace RetailCoreEcommerce.Contracts.Infrastructure;
+namespace RetailCoreEcommerce.Contracts.Abstractions.Services;
 
-public interface IStripeService
+public interface IPaymentService
 {
     string PublishableKey { get; }
 

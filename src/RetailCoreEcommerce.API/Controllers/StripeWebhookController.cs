@@ -2,7 +2,7 @@ using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RetailCoreEcommerce.Application.Abstractions;
-using RetailCoreEcommerce.Contracts.Infrastructure;
+using RetailCoreEcommerce.Contracts.Abstractions.Services;
 
 namespace RetailCoreEcommerce.API.Controllers;
 
@@ -11,16 +11,16 @@ namespace RetailCoreEcommerce.API.Controllers;
 [AllowAnonymous]
 public class StripeWebhookController : ControllerBase
 {
-    private readonly IStripeService _stripeService;
+    private readonly IPaymentService _paymentService;
     private readonly IOrderService _orderService;
     private readonly ILogger<StripeWebhookController> _logger;
 
     public StripeWebhookController(
-        IStripeService stripeService,
+        IPaymentService paymentService,
         IOrderService orderService,
         ILogger<StripeWebhookController> logger)
     {
-        _stripeService = stripeService;
+        _paymentService = paymentService;
         _orderService = orderService;
         _logger = logger;
     }
@@ -42,7 +42,7 @@ public class StripeWebhookController : ControllerBase
             return BadRequest("Missing Stripe-Signature header.");
         }
 
-        var (isValid, eventType, paymentIntentId) = _stripeService.ParseWebhookEvent(json, signature);
+        var (isValid, eventType, paymentIntentId) = _paymentService.ParseWebhookEvent(json, signature);
 
         if (!isValid)
         {

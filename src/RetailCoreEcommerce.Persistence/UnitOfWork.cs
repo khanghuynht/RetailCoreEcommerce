@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RetailCoreEcommerce.Application.Abstractions;
+using RetailCoreEcommerce.Contracts.Abstractions.Persistence;
 using RetailCoreEcommerce.Contracts.Domain;
-using RetailCoreEcommerce.Contracts.Infrastructure;
 using RetailCoreEcommerce.Persistence.Data;
 
 namespace RetailCoreEcommerce.Persistence;

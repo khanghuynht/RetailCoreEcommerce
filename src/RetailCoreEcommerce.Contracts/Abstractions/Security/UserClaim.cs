@@ -1,4 +1,4 @@
-namespace RetailCoreEcommerce.Contracts.Infrastructure;
+namespace RetailCoreEcommerce.Contracts.Abstractions.Security;
 
 public sealed record UserClaim(
     string Id,

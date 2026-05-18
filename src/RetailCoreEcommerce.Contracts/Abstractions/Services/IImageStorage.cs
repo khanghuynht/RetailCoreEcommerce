@@ -1,6 +1,6 @@
 using RetailCoreEcommerce.Contracts.Models.File;
 
-namespace RetailCoreEcommerce.Contracts.Infrastructure;
+namespace RetailCoreEcommerce.Contracts.Abstractions.Services;
 
 public interface IImageStorage
 {

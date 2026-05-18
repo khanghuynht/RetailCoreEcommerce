@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace RetailCoreEcommerce.Contracts.Models.Product;
 
 public class UpdateProductRequest

@@ -1,11 +1,11 @@
 using System.Text.Json;
 using RetailCoreEcommerce.Application.Abstractions;
-using RetailCoreEcommerce.Contracts.Infrastructure;
+using RetailCoreEcommerce.Contracts.Abstractions.Caching;
 using StackExchange.Redis;
 
 namespace RetailCoreEcommerce.Infrastructure.Redis;
 
-public class RedisService(IConnectionMultiplexer redis) : IDataCache
+public class RedisCacheService(IConnectionMultiplexer redis) : IDataCache
 {
     private readonly IDatabase _redis = redis.GetDatabase();
 

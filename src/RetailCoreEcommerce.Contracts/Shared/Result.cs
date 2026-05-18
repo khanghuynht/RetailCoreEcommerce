@@ -1,5 +1,4 @@
 namespace RetailCoreEcommerce.Contracts.Shared;
-using System.Text.Json.Serialization;
 
 public class Result
 {

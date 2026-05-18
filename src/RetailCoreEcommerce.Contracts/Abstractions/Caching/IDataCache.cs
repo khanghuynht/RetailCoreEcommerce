@@ -1,4 +1,4 @@
-namespace RetailCoreEcommerce.Contracts.Infrastructure;
+namespace RetailCoreEcommerce.Contracts.Abstractions.Caching;
 
 public interface IDataCache
 {

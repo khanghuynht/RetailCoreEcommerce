@@ -1,5 +1,5 @@
 using RetailCoreEcommerce.Application.Abstractions;
-using RetailCoreEcommerce.Contracts.Infrastructure;
+using RetailCoreEcommerce.Contracts.Abstractions.Security;
 
 namespace RetailCoreEcommerce.Infrastructure.Bcrypt;
 

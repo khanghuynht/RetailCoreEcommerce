@@ -3,15 +3,13 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using RetailCoreEcommerce.Application.Abstractions;
-using RetailCoreEcommerce.Contracts.Infrastructure;
+using RetailCoreEcommerce.Contracts.Abstractions.Security;
 using RetailCoreEcommerce.Contracts.Models.Token;
 using RetailCoreEcommerce.Contracts.Settings;
 using RetailCoreEcommerce.Contracts.Shared;
-using RetailCoreEcommerce.Domain;
 using TokenValidationResult = RetailCoreEcommerce.Contracts.Models.Token.TokenValidationResult;
 
-namespace RetailCoreEcommerce.Infrastructure.Jwt;
+namespace RetailCoreEcommerce.Infrastructure.Identity;
 
 public class JwtSecurityToken : ITokenSecurity
 {

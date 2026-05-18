@@ -1,5 +1,6 @@
 using RetailCoreEcommerce.Application.Abstractions;
-using RetailCoreEcommerce.Contracts.Infrastructure;
+using RetailCoreEcommerce.Contracts.Abstractions.Persistence;
+using RetailCoreEcommerce.Contracts.Abstractions.Services;
 using RetailCoreEcommerce.Contracts.Models.File;
 using RetailCoreEcommerce.Contracts.Shared;
 using RetailCoreEcommerce.Domain;

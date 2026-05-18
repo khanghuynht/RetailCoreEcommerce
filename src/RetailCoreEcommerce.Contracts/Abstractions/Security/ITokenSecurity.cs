@@ -1,6 +1,6 @@
 using RetailCoreEcommerce.Contracts.Models.Token;
 
-namespace RetailCoreEcommerce.Contracts.Infrastructure;
+namespace RetailCoreEcommerce.Contracts.Abstractions.Security;
 
 public interface ITokenSecurity
 {

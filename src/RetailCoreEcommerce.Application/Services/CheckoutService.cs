@@ -1,5 +1,6 @@
 using RetailCoreEcommerce.Application.Abstractions;
-using RetailCoreEcommerce.Contracts.Infrastructure;
+using RetailCoreEcommerce.Contracts.Abstractions.Caching;
+using RetailCoreEcommerce.Contracts.Abstractions.Persistence;
 using RetailCoreEcommerce.Contracts.Models.Cart;
 using RetailCoreEcommerce.Contracts.Models.Checkout;
 using RetailCoreEcommerce.Contracts.Shared;

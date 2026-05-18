@@ -3,13 +3,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using RetailCoreEcommerce.Application.Abstractions;
-using RetailCoreEcommerce.Contracts.Infrastructure;
+using RetailCoreEcommerce.Contracts.Abstractions.Caching;
+using RetailCoreEcommerce.Contracts.Abstractions.Security;
+using RetailCoreEcommerce.Contracts.Abstractions.Services;
 using RetailCoreEcommerce.Contracts.Settings;
 using RetailCoreEcommerce.Infrastructure.Bcrypt;
 using RetailCoreEcommerce.Infrastructure.Cloudinary;
-using RetailCoreEcommerce.Infrastructure.Jwt;
+using RetailCoreEcommerce.Infrastructure.Identity;
+using RetailCoreEcommerce.Infrastructure.Payments;
 using RetailCoreEcommerce.Infrastructure.Redis;
-using RetailCoreEcommerce.Infrastructure.Stripe;
 using StackExchange.Redis;
 
 namespace RetailCoreEcommerce.Infrastructure.Extensions;
@@ -66,7 +68,7 @@ public static class ServiceCollectionExtensions
                 $"{redisSettings.EndPoints}:{redisSettings.Port},user={redisSettings.User},password={redisSettings.Password}");
         });
 
-        services.AddScoped<IDataCache, RedisService>();
+        services.AddScoped<IDataCache, RedisCacheService>();
     }
 
     public static void ConfigureStripe(this IServiceCollection services, IConfiguration configuration)
@@ -78,6 +80,6 @@ public static class ServiceCollectionExtensions
             .Validate(s => !string.IsNullOrWhiteSpace(s.WebhookSecret), "StripeSettings:WebhookSecret is required")
             .ValidateOnStart();
 
-        services.AddScoped<IStripeService, StripeService>();
+        services.AddScoped<IPaymentService, PaymentPaymentService>();
     }
 }

@@ -1,5 +1,3 @@
-using RetailCoreEcommerce.Contracts.Shared;
-
 namespace RetailCoreEcommerce.Contracts.Models.Category;
 
 public class GetAllCategoriesRequest : PaginationParams

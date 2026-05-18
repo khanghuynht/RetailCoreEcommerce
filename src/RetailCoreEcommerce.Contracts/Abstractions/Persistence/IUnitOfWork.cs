@@ -1,6 +1,6 @@
 using RetailCoreEcommerce.Contracts.Domain;
 
-namespace RetailCoreEcommerce.Contracts.Infrastructure;
+namespace RetailCoreEcommerce.Contracts.Abstractions.Persistence;
 
 public interface IUnitOfWork : IDisposable
 {

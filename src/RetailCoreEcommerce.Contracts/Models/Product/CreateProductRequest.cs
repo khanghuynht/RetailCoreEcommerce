@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace RetailCoreEcommerce.Contracts.Models.Product;
 
 public class CreateProductRequest

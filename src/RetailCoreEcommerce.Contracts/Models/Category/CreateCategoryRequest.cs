@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace RetailCoreEcommerce.Contracts.Models.Category;
 
 public class CreateCategoryRequest

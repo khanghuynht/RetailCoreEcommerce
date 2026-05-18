@@ -1,5 +1,3 @@
-using RetailCoreEcommerce.Contracts.Shared;
-
 namespace RetailCoreEcommerce.Contracts.Models.User;
 
 public class GetPagedUserRequest : PaginationParams

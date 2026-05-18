@@ -1,5 +1,7 @@
 using RetailCoreEcommerce.Application.Abstractions;
-using RetailCoreEcommerce.Contracts.Infrastructure;
+using RetailCoreEcommerce.Contracts.Abstractions.Caching;
+using RetailCoreEcommerce.Contracts.Abstractions.Persistence;
+using RetailCoreEcommerce.Contracts.Abstractions.Services;
 using RetailCoreEcommerce.Contracts.Models.Cart;
 using RetailCoreEcommerce.Contracts.Models.Order;
 using RetailCoreEcommerce.Contracts.Shared;
@@ -13,16 +15,16 @@ public class OrderService : IOrderService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IDataCache _dataCache;
-    private readonly IStripeService _stripeService;
+    private readonly IPaymentService _paymentService;
 
     public OrderService(
         IUnitOfWork unitOfWork,
         IDataCache dataCache,
-        IStripeService stripeService)
+        IPaymentService paymentService)
     {
         _unitOfWork = unitOfWork;
         _dataCache = dataCache;
-        _stripeService = stripeService;
+        _paymentService = paymentService;
     }
 
     public async Task<Result<PlaceOrderResponse>> PlaceOrderAsync(
@@ -126,7 +128,7 @@ public class OrderService : IOrderService
             await _unitOfWork.SaveChangesAsync();
 
             // Create Stripe PaymentIntent
-            var (paymentIntentId, clientSecret) = await _stripeService.CreatePaymentIntentAsync(
+            var (paymentIntentId, clientSecret) = await _paymentService.CreatePaymentIntentAsync(
                 total, "usd", order.Id, ct);
 
             // Attach StripePaymentIntentId to the order
@@ -140,7 +142,7 @@ public class OrderService : IOrderService
                 OrderId = order.Id,
                 OrderCode = order.OrderCode,
                 ClientSecret = clientSecret,
-                PublishableKey = _stripeService.PublishableKey,
+                PublishableKey = _paymentService.PublishableKey,
                 TotalAmount = total
             });
         }
